@@ -35,5 +35,5 @@ CREATE TABLE IF NOT EXISTS  AssignmentPool (
     ttl DATETIME,
     assignedroutingnumber VARCHAR(12),
 	sessionid INT(20)
-)
+);
 
