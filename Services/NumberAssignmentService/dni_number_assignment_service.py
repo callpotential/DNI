@@ -19,7 +19,7 @@ def get_assignment_number(gclid:str):
 def refresh_ttl_for_existing_session(gclid:str):
     session_id = session.get_session_id_with_click_id(gclid)
 
-    if session_id not None:
+    if session_id is not None:
         pool.refresh_ttl_for_pool_number_with_session_id(session_id,120)
         return True
     return False

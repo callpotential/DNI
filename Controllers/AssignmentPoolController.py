@@ -1,28 +1,38 @@
+from datetime import datetime
+from datetime import timedelta
 import SharedModules.DatabaseConnector as db
 from Models.AssignmentPool import AssignmentPool
-import mysql.connector
 
-def load_assignment_pool_item(where_clause):
+def load_assignment_pool_item(where_condition):
+    """Loads an assignment pool item using the wherecondition provided as the filter."""
     my_db = db.newConnector()
     my_cursor = my_db.cursor()
 
-    sql = "SELECT * FROM AssignmentPool WHERE " + where_clause
+    sql = "SELECT * FROM AssignmentPool WHERE " + where_condition
 
     my_cursor.execute(sql)
     my_result = my_cursor.fetchall()
     pool_item = AssignmentPool(my_result[0])
     my_db.close()
 
-load_assignment_pool_item("sessionid = 1")
+    return pool_item
 
-
-
-def refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes):
+def update_assignment_pool_item_ttl(item:AssignmentPool):
+    """Updates the ttl on an input assignment pool object."""
     mydb = db.newConnector()
     mycursor = mydb.cursor()
 
-    sql = "UPDATE AssignmentPoolController SET address = 'Canyon 123' WHERE address = 'Valley 345'"
+    sql = ("UPDATE AssignmentPool SET ttl = '" + str(item.ttl) + "' WHERE sessionid = " + str(item.sessionid))
 
-    mycursor.execute()
+    mycursor.execute(sql)
     mydb.commit()
     mydb.close()
+
+def refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes):
+    """Uses a session id refresh the time window on an assignment pool number using the current
+    time plus whatever the duration in minutes that is input into the function."""
+    pool_item = load_assignment_pool_item("sessionid = " + str(session_id))
+    temp = datetime.now() + timedelta(minutes=duration_minutes)
+    pool_item.ttl = temp.strftime("%Y-%m-%d %H:%M:%S")
+    update_assignment_pool_item_ttl(pool_item)
+

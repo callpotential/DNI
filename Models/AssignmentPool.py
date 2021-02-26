@@ -1,9 +1,11 @@
+import datetime
+
 class AssignmentPool:
     def __init__(self,
                 poolid:int,
                 businessid:int,
                 poolphonenumber:str,
-                ttl:int,
+                ttl: str,
                 assignedroutingnumber:str,
                 sessionid:int):
 
