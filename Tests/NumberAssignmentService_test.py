@@ -3,7 +3,7 @@
 """
 
 import unittest
-import Services.NumberAssignmentService.dni_number_assignment_service as NAS
+import Services.NumberAssignmentService.NumberAssignmentService as NAS
 
 class MyTestCase(unittest.TestCase):
     """
