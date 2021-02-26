@@ -1,12 +1,13 @@
 CREATE TABLE IF NOT EXISTS  ReplacementNumberMap (
 	replacementphonenumber VARCHAR(250),
     routingnumber VARCHAR(250),
-	businessid INT(10)
+	poolid INT
 );
 
 CREATE TABLE IF NOT EXISTS  SessionInformationLog (
-		sessionid INT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        businessid INT(10),
+		sessionid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        poolid INT,
+        businessid INT,
         numberroutedsuccessfully BOOLEAN,
         replacementphonenumber VARCHAR(250),
         routingnumber VARCHAR(250),
@@ -20,20 +21,21 @@ CREATE TABLE IF NOT EXISTS  SessionInformationLog (
 );
 
 CREATE TABLE IF NOT EXISTS  BusinessConfig (
-		businessid INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+		businessid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         active BOOLEAN,
         cpmaincustomer BOOLEAN, 
-        defaultttl INT(10), 
+        defaultttl INT, 
         emailnotifications BOOLEAN, 
         emailaddress VARCHAR(250),
         featuretoggle TEXT
 );
 
 CREATE TABLE IF NOT EXISTS  AssignmentPool (
-	businessid INT(10),
+	poolid INT,
+	businessid INT,
     poolphonenumber VARCHAR(250),
     ttl DATETIME,
     assignedroutingnumber VARCHAR(250),
-	sessionid INT(20)
+	sessionid INT
 );
 
