@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS  SessionInformationLog (
         replacementphonenumber VARCHAR(250),
         routingnumber VARCHAR(250),
         poolphonenumber VARCHAR(250),
-        ttl DATETIME,
         callstart DATETIME,
         callend DATETIME,
         clickid TEXT,
