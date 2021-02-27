@@ -1,12 +1,9 @@
-"""
-
-"""
 import Controllers.SessionInformationLogController as session
 import Controllers.AssignmentPoolController as pool
 
 def get_assignment_number(gclid:str):
     """
-
+    main service function
     """
 
     if not refresh_ttl_for_existing_session(gclid):

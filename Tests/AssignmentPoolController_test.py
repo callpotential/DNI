@@ -7,7 +7,7 @@ import Controllers.AssignmentPoolController as pool
 
 class AssignmentPoolControllerTest(unittest.TestCase):
     """
-
+    unit test for assignment pool controller
     """
     def test_load_assignment_pool_item(self):
         assert pool.load_assignment_pool_item("sessionid = 1")
@@ -35,7 +35,6 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         my_db.close()
 
         assert after_time != before_time
-
 
     def test_refresh_ttl_for_pool_number_with_session_id(self):
         my_db = db.newConnector()

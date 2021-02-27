@@ -1,5 +1,3 @@
-import datetime
-
 class AssignmentPool:
     def __init__(self,
                 poolid:int,

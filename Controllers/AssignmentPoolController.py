@@ -9,6 +9,7 @@ def load_assignment_pool_item(where_condition):
     my_cursor = my_db.cursor()
 
     sql = "SELECT * FROM AssignmentPool WHERE " + where_condition
+    AssignmentPool()
 
     my_cursor.execute(sql)
     my_result = my_cursor.fetchall()
@@ -35,4 +36,3 @@ def refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes):
     temp = datetime.now() + timedelta(minutes=duration_minutes)
     pool_item.ttl = temp.strftime("%Y-%m-%d %H:%M:%S")
     update_assignment_pool_item_ttl(pool_item)
-
