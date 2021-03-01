@@ -1,20 +1,15 @@
 from datetime import datetime
 from datetime import timedelta
-import SharedModules.DatabaseConnector as db
+from SharedModules.DatabaseInterface import *
 from Models.AssignmentPool import AssignmentPool
 
 def load_assignment_pool_item(where_condition):
     """DB Interface
     Loads an assignment pool item using the wherecondition provided as the filter."""
-    my_db = db.newConnector()
-    my_cursor = my_db.cursor(dictionary=True, buffered=True)
 
     sql = "SELECT * FROM AssignmentPool WHERE " + where_condition
-
-    my_cursor.execute(sql)
-    my_result = my_cursor.fetchall()
+    my_result = DatabaseInterface.get_database().select(sql)
     pool_item = AssignmentPool(my_result[0])
-    my_db.close()
 
     return pool_item
 
@@ -22,14 +17,9 @@ def load_assignment_pool_item(where_condition):
 def update_assignment_pool_item_ttl(item:AssignmentPool):
     """DB Interface
     Updates the ttl on an input assignment pool object."""
-    mydb = db.newConnector()
-    mycursor = mydb.cursor()
 
     sql = ("UPDATE AssignmentPool SET ttl = '" + str(item.ttl) + "' WHERE sessionid = " + str(item.sessionid))
-
-    mycursor.execute(sql)
-    mydb.commit()
-    mydb.close()
+    my_result = DatabaseInterface.get_database().update(sql)
 
 def refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes):
     """Composite Controller Function

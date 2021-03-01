@@ -4,7 +4,7 @@
 
 import unittest
 import Services.NumberAssignmentService.NumberAssignmentService as NAS
-import SharedModules.DatabaseConnector as db
+import SharedModules.DatabaseInterface as db
 
 class MyTestCase(unittest.TestCase):
     """

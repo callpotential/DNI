@@ -1,9 +1,10 @@
 from datetime import datetime
 from datetime import timedelta
 import unittest
-import SharedModules.DatabaseConnector as db
+import SharedModules.DatabaseInterface as db
 from Models.AssignmentPool import AssignmentPool
 import Controllers.AssignmentPoolController as pool
+
 
 class AssignmentPoolControllerTest(unittest.TestCase):
     """
@@ -14,6 +15,8 @@ class AssignmentPoolControllerTest(unittest.TestCase):
 
     def test_update_assignment_pool_item_ttl(self):
         pool.refresh_ttl_for_pool_number_with_session_id(1, 0)
+
+
 
         my_db = db.newConnector()
         my_cursor = my_db.cursor()
