@@ -12,8 +12,10 @@ def get_session_item_with_click_id(clickid:str):
 
     my_cursor.execute(sql)
     my_result = my_cursor.fetchall()
-    session_item = session.SessionInformationLog(my_result[0])
     my_db.close()
 
-    return session_item
-
+    if my_result:
+        session_item = session.SessionInformationLog(my_result[0])
+        return session_item
+    else:
+        return False

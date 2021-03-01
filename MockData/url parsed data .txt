@@ -1,0 +1,16 @@
+{'utm_source': 'google', 
+'utm_medium': 'cpc', 
+'utm_campaign': 'G_IL_Chicago_Brand_BMM', 
+'utm_adgroup': 'CubeSmart_Core Brand', 
+'utm_keyword': '+smart +cube +storage', 
+'utm_device': 'm', 
+'utm_brandtype': 'Brand', 
+'gclsrc': 'aw.ds', 
+'gclid': 'Cj0KCQiAj9iBBhCJARIsAE9qRtCMZfs_I3sK0nm4J6wC9hmDFahTbCWy3pwi453o_cfTaWCvcK2PRKcaArn5EALw_wcB'}
+
+{'utm_source': 'facebook', 
+'utm_medium': 'cpc', 
+'utm_campaign': '3Q-Platform-Core-Retargeting', 
+'utm_content': 'Facebook_Desktop_Feed-Dev_Webinar_TwilioQ12021Releases_V_1_Ben', 
+'fbclid': 'IwAR1L_eS5f3Zp-_b1Dt78OPqTNOCtOe4ejM9QXu-8wb61NveYRKeMXcwKP6Q'}
+
