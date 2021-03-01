@@ -8,7 +8,7 @@ def get_session_item_with_click_id(clickid:str):
 
     sql = "SELECT * FROM SessionInformationLog WHERE clickid = '" + clickid + "'"
 
-    my_result = DatabaseInterface.get_database().select(sql)
+    my_result = DatabaseInterface().select(sql)
 
     if my_result:
         session_item = session.SessionInformationLog(my_result[0])

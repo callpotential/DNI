@@ -27,10 +27,11 @@ def refresh_ttl_for_existing_session(clickid:str):
 
 def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed_url:url_parser.parsed_url):
     map_item = map.get_replacement_map_item_with_number_to_replace(number_to_replace)
-    business_item = business.get_business_object_with_business_id(map_item.businessid)
+    pool_item = pool.get_expired_pool_item_with_pool_id(map_item.poolid)
+    business_item = business.get_business_object_with_business_id(pool_item.businessid)
     session_item = session.create_new_session_item(clickid,business_item.businessid,map_item,parsed_url)
     session_id = session_item.sessionid
-    pool.reserve_number_from_pool(session_id, map_item)
+    pool.reserve_number_from_pool(pool_item, session_id, map_item)
 
 
 

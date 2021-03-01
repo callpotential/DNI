@@ -8,18 +8,19 @@ def load_assignment_pool_item(where_condition):
     Loads an assignment pool item using the wherecondition provided as the filter."""
 
     sql = "SELECT * FROM AssignmentPool WHERE " + where_condition
-    my_result = DatabaseInterface.get_database().select(sql)
+    my_result = DatabaseInterface().select(sql)
     pool_item = AssignmentPool(my_result[0])
 
     return pool_item
 
+load_assignment_pool_item("sessionid = 1")
 
 def update_assignment_pool_item_ttl(item:AssignmentPool):
     """DB Interface
     Updates the ttl on an input assignment pool object."""
 
     sql = ("UPDATE AssignmentPool SET ttl = '" + str(item.ttl) + "' WHERE sessionid = " + str(item.sessionid))
-    my_result = DatabaseInterface.get_database().update(sql)
+    my_result = DatabaseInterface().update(sql)
 
 def refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes):
     """Composite Controller Function
