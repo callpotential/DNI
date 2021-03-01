@@ -18,7 +18,7 @@ All fuctions require a doc string follow this format
     PyCharm creates a documentation stub, according to the selected docstring format, 
     with the type specification, collected during the debugger session.
 
-then all you have to add is """""" afte you declare a function and split them then they will auto populate
+then all you have to add is """""" after you declare a function and split them then they will auto populate
 """
 
 """
