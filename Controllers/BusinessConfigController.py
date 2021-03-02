@@ -8,6 +8,3 @@ def get_business_object_with_business_id(business_id:int):
     business_item = BusinessConfig(my_result[0])
 
     return business_item
-
-
-print(BusinessConfig(1,True,False,120,False,"","").__dict__)

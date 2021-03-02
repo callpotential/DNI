@@ -35,7 +35,34 @@ def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed
         return False
 
     business_item = business.get_business_object_with_business_id(pool_item.businessid)
-    session_item = session.create_new_session_item(clickid,business_item.businessid,map_item,parsed_url)
+
+    session_object_dict = {'poolid': pool_item.poolid,
+    'businessid': business_item.businessid,
+    'numberroutedsuccessfully': 'NULL',
+    'replacementphonenumber': number_to_replace,
+    'routingnumber': map_item.routingnumber,
+    'poolphonenumber': pool_item.poolphonenumber,
+    'ttl': 'NULL',
+    'callstart': "NULL",
+    'callend': 'NULL',
+    'clickid': 'NULL',
+    'clicksource': parsed_url.utm_source,
+    'url': parsed_url.url,
+    'utm_source': parsed_url.utm_source,
+    'utm_medium': parsed_url.utm_medium,
+    'utm_campaign': parsed_url.utm_campaign,
+    'utm_adgroup': parsed_url.utm_adgroup,
+    'utm_keyword': parsed_url.utm_keyword,
+    'utm_device': parsed_url.utm_device,
+    'utm_brandtype': parsed_url.utm_brandtype,
+    'utm_content': parsed_url.utm_content,
+    'gclsrc': parsed_url.gclsrc,
+    'gclid': parsed_url.gclid,
+    'fbclid': parsed_url.fbclid,
+    'clickid': parsed_url.clickid
+    }
+
+    session_item = session.create_new_session_item(session_object_dict)
     session_id = session_item.sessionid
     pool.reserve_number_from_pool(pool_item, session_id, map_item)
 

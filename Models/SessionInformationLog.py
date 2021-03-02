@@ -1,32 +1,4 @@
 class SessionInformationLog:
-    def build(self,
-        sessionid:int,
-        poolid:int,
-        businessid:int,
-        numberroutedsuccessfully:bool,
-        replacementphonenumber:str,
-        routingnumber:str,
-        poolphonenumber:str,
-        ttl:str,
-        callstart:str,
-        callend:str,
-        clickid:str,
-        clicksource:str,
-        url:str):
-        """This is the class that represents the items in the session information log table.
-        """
-        self.sessionid = sessionid
-        self.poolid = poolid
-        self.businessid = businessid
-        self.numberroutedsuccessfully = numberroutedsuccessfully
-        self.replacementphonenumber = replacementphonenumber
-        self.routingnumber = routingnumber
-        self.poolphonenumber = poolphonenumber
-        self.callstart = callstart
-        self.callend = callend
-        self.clickid = clickid
-        self.clicksource = clicksource
-        self.url = url
 
     def __init__(self,row:dict):
         """This is the class that represents the items in the session information log table.
@@ -43,3 +15,15 @@ class SessionInformationLog:
         self.clickid = row['clickid']
         self.clicksource = row['clicksource']
         self.url = row['url']
+        self.utm_source = row['utm_source']
+        self.utm_medium = row['utm_medium']
+        self.utm_campaign = row['utm_campaign']
+        self.utm_adgroup = row['utm_adgroup']
+        self.utm_keyword = row['utm_keyword']
+        self.utm_device = row['utm_device']
+        self.utm_brandtype = row['utm_brandtype']
+        self.utm_content = row['utm_content']
+        self.gclsrc = row['gclsrc']
+        self.gclid = row['gclid']
+        self.fbclid = row['fbclid']
+        self.clickid = row['clickid']
