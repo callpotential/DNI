@@ -1,5 +1,5 @@
 class ReplacementNumberMap:
-    def __init__(self, replacementphonenumber:str, routingnumber:str, poolid:int):
+    def build(self, replacementphonenumber:str, routingnumber:str, poolid:int):
         """
         :param replacementphonenumber: This is the phone number from the website that will be dynamically replaced.
         :param routingnumber: This is the phone number that the dynamic number forwards to after a someone calls in.

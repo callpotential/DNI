@@ -1,5 +1,5 @@
 class SessionInformationLog:
-    def __init__(self,
+    def build(self,
         sessionid:int,
         poolid:int,
         businessid:int,

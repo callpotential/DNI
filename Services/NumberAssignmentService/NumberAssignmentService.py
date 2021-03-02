@@ -26,8 +26,14 @@ def refresh_ttl_for_existing_session(clickid:str):
     return False
 
 def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed_url:url_parser.parsed_url):
+
+    #get the map object from the database for the corresponding
     map_item = map.get_replacement_map_item_with_number_to_replace(number_to_replace)
     pool_item = pool.get_expired_pool_item_with_pool_id(map_item.poolid)
+
+    if pool_item == False:
+        return False
+
     business_item = business.get_business_object_with_business_id(pool_item.businessid)
     session_item = session.create_new_session_item(clickid,business_item.businessid,map_item,parsed_url)
     session_id = session_item.sessionid
