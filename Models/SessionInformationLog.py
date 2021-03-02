@@ -12,7 +12,6 @@ class SessionInformationLog:
         self.poolphonenumber = row['poolphonenumber']
         self.callstart = row['callstart']
         self.callend = row['callend']
-        self.clickid = row['clickid']
         self.clicksource = row['clicksource']
         self.url = row['url']
         self.utm_source = row['utm_source']

@@ -20,6 +20,20 @@ def get_session_item_with_click_id(clickid:str):
 def create_new_session_item(session_object_dict):
     session_item = SessionInformationLog(session_object_dict)
 
+    session_dict = session_item.__dict__
+    session_dict.pop("sessionid")
+
+    columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in session_dict.keys())
+    values = ', '.join(values_handler(x) for x in session_dict.values())
+    sql = "INSERT INTO SessionInformationLog ( %s ) VALUES ( %s );" % (columns, values)
+
+    id = DatabaseInterface().insert(sql)
+    session_item.sessionid = id
 
     return session_item
 
+def values_handler(x):
+    if type(x) == str:
+        return "'" + x.replace('/', '_') + "'"
+    elif type(x) == int:
+        return str(x)

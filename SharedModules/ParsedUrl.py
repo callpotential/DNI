@@ -11,7 +11,8 @@ PARSING_TEMPLATE = {
             "utm_content": "NULL",
             "gclsrc": "NULL",
             "gclid": "NULL",
-            "fbclid": "NULL"
+            "fbclid": "NULL",
+            "twclid": "NULL"
         }
 
 class parsed_url:
@@ -35,6 +36,7 @@ class parsed_url:
         self.gclsrc = parsing_template['gclsrc']
         self.gclid = parsing_template['gclid']
         self.fbclid = parsing_template['fbclid']
+        self.twclid = parsing_template['twclid']
         self.clickid = self.get_click_id()
 
     def get_click_id(self):
@@ -42,8 +44,10 @@ class parsed_url:
             return self.gclid
         elif self.fbclid != "NULL":
             return self.fbclid
+        elif self.twclid != "NULL":
+            return self.twclid
         else:
-            return None
+            return "NULL"
 
 
 

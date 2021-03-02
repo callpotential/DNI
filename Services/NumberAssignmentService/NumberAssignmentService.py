@@ -3,29 +3,41 @@ import Controllers.AssignmentPoolController as pool
 import Controllers.BusinessConfigController as business
 import Controllers.ReplacementNumberMapController as map
 import SharedModules.ParsedUrl as url_parser
+from SharedModules.ProxyDateTime import ProxyDateTime
 
-def get_assignment_number(url:str):
+def get_assignment_pool_number(url:str, number_to_replace:str):
     """
     main service function
     """
     parsed_url_object = url_parser.parsed_url(url)
 
-    if not refresh_ttl_for_existing_session(parsed_url_object.clickid):
-        """This will be hit if the gclid is new and not associated with a reserved number.
-        Create new session info log and assign a number here or handle the situation if no numbers are available."""
+    if parsed_url_object.clickid == "NULL":
+        return [map.get_replacement_map_item_with_number_to_replace(number_to_replace).routingnumber,
+               "The information provided was not from a valid or supported adclick source."]
+
+    #Check if there is a reserved pool item for this click id if there is refresh it.
+    pool_item = refresh_ttl_for_existing_session(parsed_url_object.clickid)
+    if not pool_item:
+        #If there is no pool item found create one.
+        pool_item = create_session_and_reserve_number(number_to_replace, parsed_url_object)
+        if pool_item != False:
+            #If the pool item was reserved successfully return the pool item.
+            return [pool_item.poolphonenumber, "A pool and session item was successfully created and reserved."]
+        else:
+            #If no pool item could be reserved return the routing number for the business and send an email notification.
+            return [map.get_replacement_map_item_with_number_to_replace(number_to_replace).routingnumber, "There are no more numbers left in the pool"]
     else:
-        return "The number ttl was refreshed for the existing reserved number."
+        return [pool_item.poolphonenumber, "The number ttl was refreshed for the existing reserved number."]
 
 
 def refresh_ttl_for_existing_session(clickid:str):
     session_item = session.get_session_item_with_click_id(clickid)
 
     if session_item is not False:
-        pool.refresh_ttl_for_pool_number_with_session_id(session_item.sessionid,120)
-        return True
+        return pool.refresh_ttl_for_pool_number_with_session_id(session_item.sessionid,120)
     return False
 
-def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed_url:url_parser.parsed_url):
+def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_parser.parsed_url):
 
     #get the map object from the database for the corresponding
     map_item = map.get_replacement_map_item_with_number_to_replace(number_to_replace)
@@ -44,10 +56,8 @@ def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed
     'replacementphonenumber': number_to_replace,
     'routingnumber': map_item.routingnumber,
     'poolphonenumber': pool_item.poolphonenumber,
-    'ttl': 'NULL',
-    'callstart': "NULL",
-    'callend': 'NULL',
-    'clickid': 'NULL',
+    'callstart': ProxyDateTime.min.strftime("%Y-%m-%d %H:%M:%S"),
+    'callend': ProxyDateTime.min.strftime("%Y-%m-%d %H:%M:%S"),
     'clicksource': parsed_url.utm_source,
     'url': parsed_url.url,
     'utm_source': parsed_url.utm_source,
@@ -66,14 +76,22 @@ def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed
 
     session_item = session.create_new_session_item(session_object_dict)
     session_id = session_item.sessionid
-    pool.reserve_number_from_pool(pool_item, session_id, map_item)
+    reserved_pool_item = pool.reserve_number_from_pool(session_id, map_item.routingnumber, pool_item.poolid)
+
+    if reserved_pool_item == False:
+        #pool is full
+        return False
+    else:
+        return reserved_pool_item
 
 
+# url = ('?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_'
+#         'NonBrand_Desktop_Exact&utm_adgroup=City:+Aurora&utm_keyword=s'
+#         'torage%20near%20me&utm_device=c&utm_brandtype=NonBrand&gclid=E'
+#         'AIaIQobChMItoGPhJ-r7gIVkcDACh1fcQguEAAYAiAAEgLGlvD_BwE&gclsrc=aw.ds')
 
-parsed_url_object = url_parser.parsed_url('?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_'
-                                          'NonBrand_Desktop_Exact&utm_adgroup=City:+Aurora&utm_keyword=s'
-                                          'torage%20near%20me&utm_device=c&utm_brandtype=NonBrand&gclid=E'
-                                          'AIaIQobChMItoGPhJ-r7gIVkcDACh1fcQguEAAYAiAAEgLGlvD_BwE&gclsrc=aw.ds')
+url = ("?utm_source=facebook&utm_medium=cpc&utm_campaign=3Q-Platform-Core-Retargeting&utm_content=Facebook_Desktop_Feed-Dev_Webinar_TwilioQ12021Releases_V_1_Ben&fbclid=IwAR1L_eS5f3Zp-_b1Dt78OPqTNOCtOe4edddQXu-kkk61NhhhhheMXcwKP6Q")
+number_to_replace = "234-123-4323"
+print(get_assignment_pool_number(url, number_to_replace))
 
-create_session_and_reserve_number(parsed_url_object.clickid, '234-123-4323', parsed_url_object)
 

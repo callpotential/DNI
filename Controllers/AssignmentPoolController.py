@@ -3,7 +3,6 @@ from SharedModules.DatabaseInterface import *
 from Models.AssignmentPool import AssignmentPool
 from SharedModules.ProxyDateTime import ProxyDateTime
 
-
 def load_assignment_pool_item_session_id(session_id:int):
     """DB Interface
     Loads an assignment pool item using the wherecondition provided as the filter."""
@@ -19,6 +18,18 @@ def update_assignment_pool_item_ttl(item:AssignmentPool):
     Updates the ttl on an input assignment pool object."""
 
     sql = ("UPDATE AssignmentPool SET ttl = '" + str(item.ttl) + "' WHERE sessionid = " + str(item.sessionid))
+    my_result = DatabaseInterface().update(sql)
+
+def update_assignment_pool_item(item:AssignmentPool):
+    """DB Interface
+    Updates the ttl on an input assignment pool object."""
+
+    sql = ("UPDATE AssignmentPool SET ttl = '" +
+           str(item.ttl) + "', sessionid = " +
+           str(item.sessionid) + ", assignedroutingnumber = '" +
+           item.assignedroutingnumber + "' WHERE poolphonenumber = '" +
+           item.poolphonenumber + "'")
+
     my_result = DatabaseInterface().update(sql)
 
 def get_expired_pool_item_with_pool_id(poolid:int):
@@ -41,4 +52,15 @@ def refresh_ttl_for_pool_number_with_session_id(session_id:int, duration_minutes
     pool_item.ttl = temp.strftime("%Y-%m-%d %H:%M:%S")
     update_assignment_pool_item_ttl(pool_item)
 
+    return pool_item
 
+def reserve_number_from_pool(session_id:int, routingnumber:str, poolid:int):
+    pool_item = get_expired_pool_item_with_pool_id(poolid)
+    if pool_item == False:
+        return False
+    else:
+        pool_item.ttl = ProxyDateTime.now() + timedelta(minutes=120)
+        pool_item.sessionid = session_id
+        pool_item.assignedroutingnumber = routingnumber
+        update_assignment_pool_item(pool_item)
+        return pool_item

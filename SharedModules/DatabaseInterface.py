@@ -38,3 +38,10 @@ class DatabaseInterface:
         self.get_database().cursor().execute(query)
         self.get_database().commit()
         self.close_database()
+
+    def insert(self, query: str):
+        self.get_database().cursor().execute(query)
+        self.get_database().commit()
+        id = self.get_database().cursor().lastrowid
+        self.close_database()
+        return id
