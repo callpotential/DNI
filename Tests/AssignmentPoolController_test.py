@@ -1,19 +1,9 @@
 from datetime import datetime
 import unittest
 from unittest.mock import patch
+from MockData.MockFunctions import mock_assignment_pool_dict
 from Models.AssignmentPool import AssignmentPool
 import Controllers.AssignmentPoolController as pool
-
-
-def mock_assignment_pool_dict():
-    data = dict()
-    data['poolid'] = 1
-    data['businessid'] = 2
-    data['poolphonenumber'] = '123-456-7890'
-    data['ttl'] = '2021-01-01 12:00:00'
-    data['assignedroutingnumber'] = '098-765-4321'
-    data['sessionid'] = 3
-    return data
 
 
 class AssignmentPoolControllerTest(unittest.TestCase):

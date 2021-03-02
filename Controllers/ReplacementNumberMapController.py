@@ -9,5 +9,3 @@ def get_replacement_map_item_with_number_to_replace(number_to_replace: str):
     new_map = ReplacementNumberMap(my_result[0])
 
     return new_map
-
-get_replacement_map_item_with_number_to_replace('234-123-4323')
