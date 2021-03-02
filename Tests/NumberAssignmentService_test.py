@@ -1,39 +1,47 @@
 """
 
 """
-
 import unittest
+from unittest.mock import patch
 import Services.NumberAssignmentService.NumberAssignmentService as NAS
-import SharedModules.DatabaseInterface as db
+from MockData.MockFunctions import mock_session_information_log_dict
+from Models.SessionInformationLog import SessionInformationLog
+
 
 class MyTestCase(unittest.TestCase):
     """
 
     """
-    def test_refresh_ttl_for_existing_session(self):
+    @patch('Controllers.AssignmentPoolController.refresh_ttl_for_pool_number_with_session_id')
+    @patch('Controllers.SessionInformationLogController.get_session_item_with_click_id')
+    def test_should_return_true_when_existing_session(self, get_session_item, refresh_ttl):
+        click_id = '?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_Brand_BMM&utm_adgroup=CubeSmart_Core+Brand&utm_keyword=%2B' \
+            'smart%20%2Bcube%20%2Bstorage&utm_device=m&utm_brandtype=Brand&gclsrc=aw.ds&&gclid=Cj0KCQiAj9iBBhCJARIsAE9qRtCMZfs_I3sK0' \
+            'nm4J6wC9hmDFahTbCWy3pwi453o_cfTaWCvcK2PRKcaArn5EALw_wcB'
+        session_item = SessionInformationLog(mock_session_information_log_dict())
+        session_item.sessionid = 10
+        get_session_item.return_value = session_item
 
-        my_db = db.newConnector()
-        my_cursor = my_db.cursor()
-        sql = "SELECT ttl FROM AssignmentPool WHERE sessionid = 1"
-        my_cursor.execute(sql)
-        my_result = my_cursor.fetchall()
-        before_time = my_result[0]
-        my_db.close()
+        result = NAS.refresh_ttl_for_existing_session(click_id)
 
-        NAS.refresh_ttl_for_existing_session(
-            '?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_Brand_BMM&utm_adgroup=CubeSmart_Core+Brand&utm_keyword=%2B'
-            'smart%20%2Bcube%20%2Bstorage&utm_device=m&utm_brandtype=Brand&gclsrc=aw.ds&&gclid=Cj0KCQiAj9iBBhCJARIsAE9qRtCMZfs_I3sK0'
-            'nm4J6wC9hmDFahTbCWy3pwi453o_cfTaWCvcK2PRKcaArn5EALw_wcB')
+        self.assertTrue(result)
+        get_session_item.assert_called_with(click_id)
+        refresh_ttl.assert_called_with(10, 120)
 
-        my_db = db.newConnector()
-        my_cursor = my_db.cursor()
-        sql = "SELECT ttl FROM AssignmentPool WHERE sessionid = 1"
-        my_cursor.execute(sql)
-        my_result = my_cursor.fetchall()
-        after_time = my_result[0]
-        my_db.close()
+    @patch('Controllers.AssignmentPoolController.refresh_ttl_for_pool_number_with_session_id')
+    @patch('Controllers.SessionInformationLogController.get_session_item_with_click_id')
+    def test_should_return_false_when_no_existing_session(self, get_session_item, refresh_ttl):
+        click_id = '?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_Brand_BMM&utm_adgroup=CubeSmart_Core+Brand&utm_keyword=%2B' \
+            'smart%20%2Bcube%20%2Bstorage&utm_device=m&utm_brandtype=Brand&gclsrc=aw.ds&&gclid=Cj0KCQiAj9iBBhCJARIsAE9qRtCMZfs_I3sK0' \
+            'nm4J6wC9hmDFahTbCWy3pwi453o_cfTaWCvcK2PRKcaArn5EALw_wcB'
+        get_session_item.return_value = False
 
-        assert after_time != before_time
+        result = NAS.refresh_ttl_for_existing_session(click_id)
+
+        self.assertFalse(result)
+        get_session_item.assert_called_with(click_id)
+        refresh_ttl.assert_not_called
+
 
 if __name__ == '__main__':
     unittest.main()

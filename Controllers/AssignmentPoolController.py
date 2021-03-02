@@ -1,7 +1,8 @@
-from datetime import datetime
 from datetime import timedelta
 from SharedModules.DatabaseInterface import *
 from Models.AssignmentPool import AssignmentPool
+from SharedModules.ProxyDateTime import ProxyDateTime
+
 
 def load_assignment_pool_item_session_id(session_id:int):
     """DB Interface
@@ -36,8 +37,7 @@ def refresh_ttl_for_pool_number_with_session_id(session_id:int, duration_minutes
     Uses a session id refresh the time window on an assignment pool number using the current
     time plus whatever the duration in minutes that is input into the function."""
     pool_item = load_assignment_pool_item_session_id(session_id)
-    now = datetime.now()
-    temp = now + timedelta(minutes=duration_minutes)
+    temp = ProxyDateTime.now() + timedelta(minutes=duration_minutes)
     pool_item.ttl = temp.strftime("%Y-%m-%d %H:%M:%S")
     update_assignment_pool_item_ttl(pool_item)
 

@@ -18,10 +18,10 @@ def get_assignment_number(url:str):
 
 
 def refresh_ttl_for_existing_session(clickid:str):
-    session_id = session.get_session_item_with_click_id(clickid).sessionid
+    session_item = session.get_session_item_with_click_id(clickid)
 
-    if session_id is not None:
-        pool.refresh_ttl_for_pool_number_with_session_id(session_id,120)
+    if session_item is not False:
+        pool.refresh_ttl_for_pool_number_with_session_id(session_item.sessionid,120)
         return True
     return False
 
