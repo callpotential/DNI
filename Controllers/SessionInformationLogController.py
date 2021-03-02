@@ -17,3 +17,9 @@ def get_session_item_with_click_id(clickid:str):
     else:
         return False
 
+def create_new_session_item(session_object_dict):
+    session_item = SessionInformationLog(session_object_dict)
+
+
+    return session_item
+

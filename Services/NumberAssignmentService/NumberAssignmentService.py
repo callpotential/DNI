@@ -36,7 +36,9 @@ def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed
 
     business_item = business.get_business_object_with_business_id(pool_item.businessid)
 
-    session_object_dict = {'poolid': pool_item.poolid,
+    session_object_dict = {
+    'sessionid': int(),
+    'poolid': pool_item.poolid,
     'businessid': business_item.businessid,
     'numberroutedsuccessfully': 'NULL',
     'replacementphonenumber': number_to_replace,
@@ -68,6 +70,10 @@ def create_session_and_reserve_number(clickid:str, number_to_replace:str, parsed
 
 
 
+parsed_url_object = url_parser.parsed_url('?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_'
+                                          'NonBrand_Desktop_Exact&utm_adgroup=City:+Aurora&utm_keyword=s'
+                                          'torage%20near%20me&utm_device=c&utm_brandtype=NonBrand&gclid=E'
+                                          'AIaIQobChMItoGPhJ-r7gIVkcDACh1fcQguEAAYAiAAEgLGlvD_BwE&gclsrc=aw.ds')
 
-
+create_session_and_reserve_number(parsed_url_object.clickid, '234-123-4323', parsed_url_object)
 
