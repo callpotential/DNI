@@ -27,10 +27,30 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         mock_object['sessionid'] = 5
         dbi_select.return_value = [mock_object]
 
-        result = pool.load_assignment_pool_item("sessionid = 5")
+        result = pool.load_assignment_pool_item_session_id(5)
 
         self.assertEqual(result.sessionid, 5)
         dbi_select.assert_called_with("SELECT * FROM AssignmentPool WHERE sessionid = 5")
+
+    @patch('SharedModules.DatabaseInterface.DatabaseInterface.select')
+    def test_get_expired_pool_item_when_exists(self, dbi_select):
+        mock_object = mock_assignment_pool_dict()
+        mock_object['poolid'] = 8
+        dbi_select.return_value = [mock_object]
+
+        result = pool.get_expired_pool_item_with_pool_id(8)
+
+        self.assertEqual(result.poolid, 8)
+        dbi_select.assert_called_with("SELECT * FROM AssignmentPool WHERE poolid = 8 AND ttl < NOW()")
+
+    @patch('SharedModules.DatabaseInterface.DatabaseInterface.select')
+    def test_get_expired_pool_item_when_exists(self, dbi_select):
+        dbi_select.return_value = []
+
+        result = pool.get_expired_pool_item_with_pool_id(9)
+
+        self.assertFalse(result)
+        dbi_select.assert_called_with("SELECT * FROM AssignmentPool WHERE poolid = 9 AND ttl < NOW()")
 
     @patch('SharedModules.DatabaseInterface.DatabaseInterface.update')
     def test_update_assignment_pool_item_ttl(self, dbi_update):

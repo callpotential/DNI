@@ -23,7 +23,6 @@ class parsed_url:
 
         for key in params.keys():
             parsing_template[key] = params[key]
-
         self.url = url
         self.utm_source = parsing_template['utm_source']
         self.utm_medium = parsing_template['utm_medium']

@@ -1,5 +1,5 @@
 class AssignmentPool:
-    def __init__(self,
+    def build(self,
                 poolid:int,
                 businessid:int,
                 poolphonenumber:str,
