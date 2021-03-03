@@ -17,6 +17,12 @@ def get_session_item_with_click_id(clickid:str):
     else:
         return False
 
+# def get_next_session_id():
+#     sql = "SELECT * FROM SessionInformationLog WHERE max(sessionid)"
+#     my_result = DatabaseInterface().select(sql)
+#     print(my_result)
+
+
 def create_new_session_item(session_object_dict):
     session_item = SessionInformationLog(session_object_dict)
 
