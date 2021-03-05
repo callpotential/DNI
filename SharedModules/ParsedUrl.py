@@ -1,5 +1,7 @@
 from urllib import parse
 
+from SharedModules.Logger import trace_logging
+
 PARSING_TEMPLATE = {
             "utm_source": "NULL",
             "utm_medium": "NULL",
@@ -39,6 +41,7 @@ class parsed_url:
         self.twclid = parsing_template['twclid']
         self.clickid = self.get_click_id()
 
+    @trace_logging()
     def get_click_id(self):
         if self.gclid != "NULL":
             return self.gclid

@@ -3,8 +3,10 @@ import Controllers.AssignmentPoolController as pool
 import Controllers.BusinessConfigController as business
 import Controllers.ReplacementNumberMapController as map
 import SharedModules.ParsedUrl as url_parser
+from SharedModules.Logger import trace_logging
 from SharedModules.ProxyDateTime import ProxyDateTime
 
+@trace_logging()
 def get_assignment_pool_number(url:str, number_to_replace:str):
     """
     main service function
@@ -30,6 +32,7 @@ def get_assignment_pool_number(url:str, number_to_replace:str):
         return [pool_item.poolphonenumber, "The number ttl was refreshed for the existing reserved number."]
 
 
+@trace_logging()
 def refresh_ttl_for_existing_session(clickid:str):
     session_item = session.get_session_item_with_click_id(clickid)
 
@@ -37,6 +40,7 @@ def refresh_ttl_for_existing_session(clickid:str):
         return pool.refresh_ttl_for_pool_number_with_session_id(session_item.sessionid,120)
     return False
 
+@trace_logging()
 def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_parser.parsed_url):
 
     #get the map object from the database for the corresponding

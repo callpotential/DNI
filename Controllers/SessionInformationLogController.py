@@ -1,7 +1,10 @@
 from SharedModules.DatabaseInterface import *
 import Models.SessionInformationLog as session
 from Models.SessionInformationLog import SessionInformationLog
+from SharedModules.Logger import trace_logging
 
+
+@trace_logging()
 def get_session_item_with_click_id(clickid:str):
     """DB Interface
     This function will reach out to the database and get a session item using the click id.
@@ -23,6 +26,7 @@ def get_session_item_with_click_id(clickid:str):
 #     print(my_result)
 
 
+@trace_logging()
 def create_new_session_item(session_object_dict):
     session_item = SessionInformationLog(session_object_dict)
 
@@ -38,6 +42,7 @@ def create_new_session_item(session_object_dict):
 
     return session_item
 
+@trace_logging()
 def values_handler(x):
     if type(x) == str:
         return "'" + x.replace('/', '_') + "'"
