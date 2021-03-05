@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
 
         result = session.get_session_item_with_click_id(click_id)
 
-        self.assertEquals(result.clickid, click_id)
+        self.assertEqual(result.clickid, click_id)
 
     @patch('SharedModules.DatabaseInterface.DatabaseInterface.select')
     def test_invalid_click_id(self, dbi_select):

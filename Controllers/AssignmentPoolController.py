@@ -1,9 +1,12 @@
 from datetime import timedelta
 from SharedModules.DatabaseInterface import *
 from Models.AssignmentPool import AssignmentPool
+from SharedModules.Logger import trace_logging, get_logger
 from SharedModules.ProxyDateTime import ProxyDateTime
 
-def load_assignment_pool_item_session_id(session_id:int):
+
+@trace_logging()
+def load_assignment_pool_item_session_id(session_id: int):
     """DB Interface
     Loads an assignment pool item using the wherecondition provided as the filter."""
 
@@ -13,14 +16,18 @@ def load_assignment_pool_item_session_id(session_id:int):
 
     return pool_item
 
-def update_assignment_pool_item_ttl(item:AssignmentPool):
+
+@trace_logging()
+def update_assignment_pool_item_ttl(item: AssignmentPool):
     """DB Interface
     Updates the ttl on an input assignment pool object."""
 
     sql = ("UPDATE AssignmentPool SET ttl = '" + str(item.ttl) + "' WHERE sessionid = " + str(item.sessionid))
     my_result = DatabaseInterface().update(sql)
 
-def update_assignment_pool_item(item:AssignmentPool):
+
+@trace_logging()
+def update_assignment_pool_item(item: AssignmentPool):
     """DB Interface
     Updates the ttl on an input assignment pool object."""
 
@@ -32,7 +39,9 @@ def update_assignment_pool_item(item:AssignmentPool):
 
     my_result = DatabaseInterface().update(sql)
 
-def get_expired_pool_item_with_pool_id(poolid:int):
+
+@trace_logging()
+def get_expired_pool_item_with_pool_id(poolid: int):
     """DB Interface
     This function gets the next expired pool object with matching poolid."""
     sql = "SELECT * FROM AssignmentPool WHERE poolid = " + str(poolid) + " AND ttl < NOW()"
@@ -43,7 +52,9 @@ def get_expired_pool_item_with_pool_id(poolid:int):
     else:
         return False
 
-def refresh_ttl_for_pool_number_with_session_id(session_id:int, duration_minutes:int):
+
+@trace_logging()
+def refresh_ttl_for_pool_number_with_session_id(session_id: int, duration_minutes: int):
     """Composite Controller Function
     Uses a session id refresh the time window on an assignment pool number using the current
     time plus whatever the duration in minutes that is input into the function."""
@@ -54,7 +65,9 @@ def refresh_ttl_for_pool_number_with_session_id(session_id:int, duration_minutes
 
     return pool_item
 
-def reserve_number_from_pool(session_id:int, routingnumber:str, poolid:int):
+
+@trace_logging()
+def reserve_number_from_pool(session_id: int, routingnumber: str, poolid: int):
     pool_item = get_expired_pool_item_with_pool_id(poolid)
     if pool_item == False:
         return False
