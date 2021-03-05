@@ -2,12 +2,13 @@ from flask import Flask
 from flask import request
 from twilio.twiml.voice_response import VoiceResponse
 from twilio.rest import Client
+import os
 import json
 import urllib.request
 
 app = Flask(__name__)
-ACCOUNT_SID = "AC99cc9b8bf49b325289f896b2bb86c7d6"
-ACCOUNT_TOKEN = "5793770e800dea86597819a14b53d63c"
+ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
+ACCOUNT_TOKEN = os.environ['TWILIO_ACCOUNT_TOKEN']
 
 @app.route("/answer", methods=['GET', 'POST'])
 def answer_call():
