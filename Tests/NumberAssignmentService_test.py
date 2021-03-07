@@ -3,7 +3,7 @@
 """
 import unittest
 from unittest.mock import patch
-import Services.NumberAssignmentService.NumberAssignmentService as NAS
+import Services.NumberAssignment.NumberAssignmentService as NAS
 from MockData.MockFunctions import mock_session_information_log_dict
 from Models.SessionInformationLog import SessionInformationLog
 
