@@ -29,7 +29,7 @@ client = Client(ACCOUNT_SID, ACCOUNT_TOKEN)
 
 def create_new_phone_number(client, phone_number):
 
-    voice_url = "http://7229cde20d08.ngrok.io/answer?phone={0}".format(phone_number)
+    voice_url = "http://7229cde20d08.ngrok.io/answer_forward?phone={0}".format(phone_number)
     status_url = "http://7229cde20d08.ngrok.io/end"
 
     incoming_phone_number = client.incoming_phone_numbers.create(phone_number=str(phone_number),voice_url=voice_url,status_callback=status_url)
