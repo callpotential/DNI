@@ -1,6 +1,5 @@
 import controllers.session_information_log_controller as session
 import controllers.assignment_pool_controller as pool
-import controllers.business_config_controller as business
 import controllers.replacement_number_map_controller as map
 import shared_modules.parsed_url as url_parser
 from shared_modules.logger import trace_logging
@@ -50,12 +49,10 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
     if pool_item is False:
         return False
 
-    business_item = business.get_business_object_with_business_id(pool_item.businessid)
-
     session_object_dict = {
     'sessionid': int(),
     'poolid': pool_item.poolid,
-    'businessid': business_item.businessid,
+    'businessid': pool_item.businessid,
     'numberroutedsuccessfully': 'NULL',
     'replacementphonenumber': number_to_replace,
     'routingnumber': map_item.routingnumber,
