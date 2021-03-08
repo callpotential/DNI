@@ -7,3 +7,6 @@ mysql-connector-python==8.0.23
 pylint==2.7.2
 toml==0.10.2
 wrapt==1.12.1
+
+Flask~=1.1.2
+twilio~=6.53.0

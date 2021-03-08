@@ -39,3 +39,21 @@ def mock_session_information_log_dict():
     data['fbclid'] = 1
     data['clickid'] = 'test'
     return data
+
+def mock_business_config_dict():
+    data = dict()
+    data['businessid'] = 1
+    data['active'] = True
+    data['cpmaincustomer'] = True
+    data['defaultttl'] = 1
+    data['emailnotifications'] = True
+    data['emailaddress'] = 'a@a.com"'
+    data['featuretoggle'] = 1
+    return data
+
+def mock_replacement_number_map_dict():
+    data = dict()
+    data['replacementphonenumber'] = '111-111-2222'
+    data['routingnumber'] = '111-111-2223'
+    data['poolid'] = 1
+    return data
