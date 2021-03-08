@@ -1,6 +1,5 @@
 from models.business_config import BusinessConfig
 from shared_modules.database_interface import *
-import datetime as dt
 
 from shared_modules.logger import trace_logging
 

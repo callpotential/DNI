@@ -6,13 +6,13 @@ ACCOUNT_TOKEN = "5793770e800dea86597819a14b53d63c"
 def get_list_of_numbers_from_area_code(client, limit, area_code, locality):
     available_phone_number_country = None
 
-    if area_code == None and locality == None:
+    if area_code is None and locality is None:
         available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code, in_locality=locality)
-    elif area_code != None and locality != None:
+    elif area_code is not None and locality is not None:
         available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code, in_locality=locality)
-    elif area_code != None and locality == None:
+    elif area_code is not None and locality is None:
         available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code)
-    elif area_code == None and locality != None:
+    elif area_code is None and locality is not None:
         available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, in_locality=locality)
 
     list_of_number = []

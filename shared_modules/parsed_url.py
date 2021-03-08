@@ -49,8 +49,4 @@ class ParsedUrl:
             return self.fbclid
         elif self.twclid != "NULL":
             return self.twclid
-        else:
-            return "NULL"
-
-
-
+        return "NULL"

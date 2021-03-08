@@ -22,7 +22,7 @@ def get_assignment_pool_number(url:str, number_to_replace:str):
     if not pool_item:
         #If there is no pool item found create one.
         pool_item = create_session_and_reserve_number(number_to_replace, parsed_url_object)
-        if pool_item != False:
+        if pool_item is not False:
             #If the pool item was reserved successfully return the pool item.
             return [pool_item.poolphonenumber, "A pool and session item was successfully created and reserved."]
         else:
@@ -47,7 +47,7 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
     map_item = map.get_replacement_map_item_with_number_to_replace(number_to_replace)
     pool_item = pool.get_expired_pool_item_with_pool_id(map_item.poolid)
 
-    if pool_item == False:
+    if pool_item is False:
         return False
 
     business_item = business.get_business_object_with_business_id(pool_item.businessid)
@@ -82,10 +82,7 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
     session_id = session_item.sessionid
     reserved_pool_item = pool.reserve_number_from_pool(session_id, map_item.routingnumber, pool_item.poolid)
 
-    if reserved_pool_item == False:
+    if reserved_pool_item is False:
         #pool is full
         return False
-    else:
-        return reserved_pool_item
-
-
+    return reserved_pool_item

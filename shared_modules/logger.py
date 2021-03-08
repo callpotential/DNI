@@ -76,5 +76,3 @@ def trace_logging():
         return wrapper
 
     return error_log
-
-

@@ -69,7 +69,7 @@ def refresh_ttl_for_pool_number_with_session_id(session_id: int, duration_minute
 @trace_logging()
 def reserve_number_from_pool(session_id: int, routingnumber: str, poolid: int):
     pool_item = get_expired_pool_item_with_pool_id(poolid)
-    if pool_item == False:
+    if pool_item is False:
         return False
     else:
         pool_item.ttl = ProxyDateTime.now() + timedelta(minutes=120)

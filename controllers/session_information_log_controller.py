@@ -17,8 +17,7 @@ def get_session_item_with_click_id(clickid:str):
     if my_result:
         session_item = SessionInformationLog(my_result[0])
         return session_item
-    else:
-        return False
+    return False
 
 # def get_next_session_id():
 #     sql = "SELECT * FROM session_information_log WHERE max(sessionid)"

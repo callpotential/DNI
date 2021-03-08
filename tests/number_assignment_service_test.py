@@ -1,6 +1,3 @@
-"""
-
-"""
 import unittest
 from unittest.mock import patch
 import services.number_assignment.number_assignment_service as NAS
@@ -14,7 +11,7 @@ from models.session_information_log import SessionInformationLog
 
 class NumberAssignmentServiceTest(unittest.TestCase):
     """
-
+        This is a test for the number assignment service.
     """
     @patch('controllers.AssignmentPoolController.refresh_ttl_for_pool_number_with_session_id')
     @patch('controllers.SessionInformationLogController.get_session_item_with_click_id')
