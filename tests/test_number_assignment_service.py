@@ -13,6 +13,114 @@ class NumberAssignmentServiceTest(unittest.TestCase):
     """
         This is a test for the number assignment service.
     """
+    @patch('shared_modules.parsed_url.ParsedUrl')
+    @patch('controllers.replacement_number_map_controller.get_replacement_map_item_with_number_to_replace')
+    def test_get_assignment_pool_number_when_there_is_no_click_id(self, get_replacement, parsed_url):
+        mock_url = mock_parsed_url()
+        mock_url.clickid = 'NULL'
+        parsed_url.return_value = mock_url
+        mock_replacement_number = ReplacementNumberMap(mock_replacement_number_map_dict())
+        mock_replacement_number.routingnumber = '123-112-1234'
+        get_replacement.return_value = mock_replacement_number
+
+        result = NAS.get_assignment_pool_number('www.google.com', '111-111-1111')
+
+        self.assertEqual(result, ['123-112-1234', "The information provided was not from a valid or supported adclick source."])
+
+    @patch('shared_modules.parsed_url.ParsedUrl')
+    @patch('controllers.assignment_pool_controller.refresh_ttl_for_pool_number_with_session_id')
+    @patch('controllers.session_information_log_controller.get_session_item_with_click_id')
+    def test_get_assignment_pool_number_when_there_is_an_existing_session(self, get_existing_session, refresh_ttl, parsed_url):
+        mock_url = mock_parsed_url()
+        mock_url.clickid = 'Not NULL'
+        parsed_url.return_value = mock_url
+        mock_session = SessionInformationLog(mock_session_information_log_dict())
+        mock_session.sessionid = 4
+        get_existing_session.return_value = mock_session
+        mock_pool_item = AssignmentPool(mock_assignment_pool_dict())
+        mock_pool_item.poolphonenumber = '111-111-1112'
+        refresh_ttl.return_value = mock_pool_item
+
+        result = NAS.get_assignment_pool_number('www.google.com', '111-111-1111')
+
+        self.assertEqual(result, ['111-111-1112', "The number ttl was refreshed for the existing reserved number."])
+        get_existing_session.assert_called_with('Not NULL')
+        refresh_ttl.assert_called_with(4, 120)
+
+    @patch('shared_modules.parsed_url.ParsedUrl')
+    @patch('controllers.replacement_number_map_controller.get_replacement_map_item_with_number_to_replace')
+    @patch('controllers.assignment_pool_controller.get_expired_pool_item_with_pool_id')
+    @patch('controllers.assignment_pool_controller.reserve_number_from_pool')
+    @patch('controllers.session_information_log_controller.create_new_session_item')
+    @patch('controllers.session_information_log_controller.get_session_item_with_click_id')
+    def test_get_assignment_pool_number_when_there_is_no_existing_session(self, get_existing_session, create_new_session, reserve_number, get_expired_item, get_replacement_map, parsed_url):
+        mock_url = mock_parsed_url()
+        mock_url.clickid = 'Not NULL'
+        parsed_url.return_value = mock_url
+
+        get_existing_session.return_value = False
+
+        mock_map_item = ReplacementNumberMap(mock_replacement_number_map_dict())
+        mock_map_item.poolid = 2
+        mock_map_item.routingnumber = '121-121-1212'
+        get_replacement_map.return_value = mock_map_item
+
+        mock_pool_item = AssignmentPool(mock_assignment_pool_dict())
+        mock_pool_item.poolid = 3
+        get_expired_item.return_value = mock_pool_item
+
+        mock_session = SessionInformationLog(mock_session_information_log_dict())
+        mock_session.sessionid = 5
+        create_new_session.return_value = mock_session
+
+        mock_pool_item = AssignmentPool(mock_assignment_pool_dict())
+        mock_pool_item.poolphonenumber = '111-111-1113'
+        reserve_number.return_value = mock_pool_item
+
+
+        result = NAS.get_assignment_pool_number('www.google.com', '111-111-1111')
+
+        self.assertEqual(result, ['111-111-1113', "A pool and session item was successfully created and reserved."])
+        get_existing_session.assert_called_with('Not NULL')
+        create_new_session.assert_called()  # The dict that it's called with is hard coded and would look nasty in here
+        reserve_number.assert_called_with(5, '121-121-1212', 3)
+
+    @patch('shared_modules.parsed_url.ParsedUrl')
+    @patch('controllers.replacement_number_map_controller.get_replacement_map_item_with_number_to_replace')
+    @patch('controllers.assignment_pool_controller.get_expired_pool_item_with_pool_id')
+    @patch('controllers.assignment_pool_controller.reserve_number_from_pool')
+    @patch('controllers.session_information_log_controller.create_new_session_item')
+    @patch('controllers.session_information_log_controller.get_session_item_with_click_id')
+    def test_get_assignment_pool_number_when_there_is_no_existing_session_and_pool_empty(self, get_existing_session, create_new_session, reserve_number, get_expired_item, get_replacement_map, parsed_url):
+        mock_url = mock_parsed_url()
+        mock_url.clickid = 'Not NULL'
+        parsed_url.return_value = mock_url
+
+        get_existing_session.return_value = False
+
+        mock_map_item = ReplacementNumberMap(mock_replacement_number_map_dict())
+        mock_map_item.poolid = 2
+        mock_map_item.routingnumber = '121-121-1212'
+        get_replacement_map.return_value = mock_map_item
+
+        mock_pool_item = AssignmentPool(mock_assignment_pool_dict())
+        mock_pool_item.poolid = 3
+        get_expired_item.return_value = mock_pool_item
+
+        mock_session = SessionInformationLog(mock_session_information_log_dict())
+        mock_session.sessionid = 5
+        create_new_session.return_value = mock_session
+
+        reserve_number.return_value = False
+
+
+        result = NAS.get_assignment_pool_number('www.google.com', '111-111-1111')
+
+        self.assertEqual(result, ['121-121-1212', "There are no more numbers left in the pool"])
+        get_existing_session.assert_called_with('Not NULL')
+        create_new_session.assert_called()  # The dict that it's called with is hard coded and would look nasty in here
+        reserve_number.assert_called_with(5, '121-121-1212', 3)
+
     @patch('controllers.assignment_pool_controller.refresh_ttl_for_pool_number_with_session_id')
     @patch('controllers.session_information_log_controller.get_session_item_with_click_id')
     def test_should_return_true_when_existing_session(self, get_session_item, refresh_ttl):
