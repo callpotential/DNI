@@ -6,7 +6,7 @@ from mock_data.mock_functions import mock_session_information_log_dict
 
 class SessionInformationLogControllerTest(unittest.TestCase):
 
-    @patch('SharedModules.database_interface.database_interface.select')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_valid_click_id(self, dbi_select):
         click_id = \
             '?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_Brand_BMM&utm_adgroup=CubeSmart_Core+Brand&utm_keyword=%2B' \
@@ -20,7 +20,7 @@ class SessionInformationLogControllerTest(unittest.TestCase):
 
         self.assertEqual(result.clickid, click_id)
 
-    @patch('SharedModules.database_interface.database_interface.select')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_invalid_click_id(self, dbi_select):
         dbi_select.return_value = []
 

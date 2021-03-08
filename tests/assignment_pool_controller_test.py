@@ -11,7 +11,7 @@ class AssignmentPoolControllerTest(unittest.TestCase):
     unit test for assignment pool controller
     """
 
-    @patch('SharedModules.database_interface.database_interface.select')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_load_assignment_pool_item(self, dbi_select):
         mock_object = mock_assignment_pool_dict()
         mock_object['sessionid'] = 5
@@ -22,7 +22,7 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         self.assertEqual(result.sessionid, 5)
         dbi_select.assert_called_with("SELECT * FROM assignment_pool WHERE sessionid = 5")
 
-    @patch('SharedModules.database_interface.database_interface.select')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_get_expired_pool_item_when_exists(self, dbi_select):
         mock_object = mock_assignment_pool_dict()
         mock_object['poolid'] = 8
@@ -33,7 +33,7 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         self.assertEqual(result.poolid, 8)
         dbi_select.assert_called_with("SELECT * FROM assignment_pool WHERE poolid = 8 AND ttl < NOW()")
 
-    @patch('SharedModules.database_interface.database_interface.select')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_get_expired_pool_item_when_exists(self, dbi_select):
         dbi_select.return_value = []
 
@@ -42,7 +42,7 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         self.assertFalse(result)
         dbi_select.assert_called_with("SELECT * FROM assignment_pool WHERE poolid = 9 AND ttl < NOW()")
 
-    @patch('SharedModules.database_interface.database_interface.update')
+    @patch('shared_modules.database_interface.DatabaseInterface.update')
     def test_update_assignment_pool_item_ttl(self, dbi_update):
         mock_object = mock_assignment_pool_dict()
         mock_object['ttl'] = '2020-01-01 12:00:00'
@@ -53,9 +53,9 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         dbi_update.assert_called_with(
             "UPDATE assignment_pool SET ttl = '2020-01-01 12:00:00' WHERE sessionid = 7")
 
-    @patch('SharedModules.proxy_date_time.proxy_date_time.now')
-    @patch('SharedModules.database_interface.database_interface.update')
-    @patch('SharedModules.database_interface.database_interface.select')
+    @patch('shared_modules.proxy_date_time.ProxyDateTime.now')
+    @patch('shared_modules.database_interface.DatabaseInterface.update')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_refresh_ttl_for_pool_number_with_session_id(self, dbi_select, dbi_update, date_time):
         mock_object = mock_assignment_pool_dict()
         mock_object['ttl'] = '2020-01-01 08:00:00'

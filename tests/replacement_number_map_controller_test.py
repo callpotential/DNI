@@ -9,7 +9,7 @@ class ReplacementNumberMapControllerTest(unittest.TestCase):
     unit test for replacement number map controller
     """
 
-    @patch('SharedModules.database_interface.database_interface.select')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_get_replacement_map_item_with_number_to_replace(self, dbi_select):
         mock_object = mock_replacement_number_map_dict()
         mock_object['replacementphonenumber'] = '123-444-555'
