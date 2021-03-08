@@ -4,7 +4,7 @@ import controllers.replacement_number_map_controller as RNMController
 from mock_data.mock_functions import mock_replacement_number_map_dict
 
 
-class replacement_number_map_controller_test(unittest.TestCase):
+class ReplacementNumberMapControllerTest(unittest.TestCase):
     """
     unit test for replacement number map controller
     """

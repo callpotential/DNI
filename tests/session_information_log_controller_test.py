@@ -4,7 +4,7 @@ import controllers.session_information_log_controller as session
 from mock_data.mock_functions import mock_session_information_log_dict
 
 
-class session_information_log_controller_test(unittest.TestCase):
+class SessionInformationLogControllerTest(unittest.TestCase):
 
     @patch('SharedModules.database_interface.database_interface.select')
     def test_valid_click_id(self, dbi_select):

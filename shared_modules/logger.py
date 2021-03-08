@@ -2,7 +2,7 @@ import functools
 from enum import Enum
 
 
-class log_level(Enum):
+class LogLevel(Enum):
     all = 1
     trace = 2
     debug = 3
@@ -12,36 +12,36 @@ class log_level(Enum):
 
 
 class Logger:
-    def __init__(self, level: log_level = log_level.all) -> None:
+    def __init__(self, level: LogLevel = LogLevel.all) -> None:
         self.level = level
 
     # Used to log entrance and exits of functions
     def log_trace(self, message: str) -> None:
-        self.__log(log_level.trace, "TRACE: " + message)
+        self.__log(LogLevel.trace, "TRACE: " + message)
 
     # Used to log normal program execution
     def log_debug(self, message: str) -> None:
-        self.__log(log_level.trace, "DEBUG: " + message)
+        self.__log(LogLevel.trace, "DEBUG: " + message)
 
     # Used to log non-happy path/optional scenarios
     def log_info(self, message: str) -> None:
-        self.__log(log_level.trace, "INFO:  " + message)
+        self.__log(LogLevel.trace, "INFO:  " + message)
 
     # Used to log non desirable situations that either do not cause execution failure or were handled
     def log_warning(self, message: str) -> None:
-        self.__log(log_level.trace, "WARN:  " + message)
+        self.__log(LogLevel.trace, "WARN:  " + message)
 
     # Used to log any error that causes execution fail
     def log_error(self, message: str) -> None:
-        self.__log(log_level.trace, "ERR:   " + message)
+        self.__log(LogLevel.trace, "ERR:   " + message)
 
-    def __log(self, level: log_level, message: str) -> None:
+    def __log(self, level: LogLevel, message: str) -> None:
         if level.value >= self.level.value:
             print(message)
 
 
 # Sets the logger level for everything
-logger = Logger(log_level.all)
+logger = Logger(LogLevel.all)
 
 
 def get_logger() -> Logger:

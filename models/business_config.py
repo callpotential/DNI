@@ -1,4 +1,4 @@
-class business_config:
+class BusinessConfig:
 
     def __init__(self, business_dict:dict):
         self.businessid = business_dict['businessid']

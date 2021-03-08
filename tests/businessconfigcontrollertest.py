@@ -4,7 +4,7 @@ import controllers.business_config_controller as BConfig
 from mock_data.mock_functions import mock_business_config_dict
 
 
-class business_config_controller_test(unittest.TestCase):
+class BusinessConfigControllerTest(unittest.TestCase):
     """
     unit test for business config controller
     """

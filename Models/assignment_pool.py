@@ -1,4 +1,4 @@
-class assignment_pool:
+class AssignmentPool:
 
     def __init__(self, row:dict):
         """This init is for creating an object from a database response"""

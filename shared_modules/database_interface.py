@@ -15,7 +15,7 @@ def new_connector():
                               database=DATABASE)
 
 
-class database_interface:
+class DatabaseInterface:
 
     def __init__(self):
         self.db = None

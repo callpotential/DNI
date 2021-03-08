@@ -17,7 +17,7 @@ PARSING_TEMPLATE = {
             "twclid": "NULL"
         }
 
-class parsed_url:
+class ParsedUrl:
     def __init__(self, url):
         parsing_template = PARSING_TEMPLATE
         parse.urlsplit(url)

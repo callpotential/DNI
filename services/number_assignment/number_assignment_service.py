@@ -4,14 +4,14 @@ import controllers.business_config_controller as business
 import controllers.replacement_number_map_controller as map
 import shared_modules.parsed_url as url_parser
 from shared_modules.logger import trace_logging
-from shared_modules.proxy_date_time import proxy_date_time
+from shared_modules.proxy_date_time import ProxyDateTime
 
 @trace_logging()
 def get_assignment_pool_number(url:str, number_to_replace:str):
     """
     main service function
     """
-    parsed_url_object = url_parser.parsed_url(url)
+    parsed_url_object = url_parser.ParsedUrl(url)
 
     if parsed_url_object.clickid == "NULL":
         return [map.get_replacement_map_item_with_number_to_replace(number_to_replace).routingnumber,
@@ -41,7 +41,7 @@ def refresh_ttl_for_existing_session(clickid:str):
     return False
 
 @trace_logging()
-def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_parser.parsed_url):
+def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_parser.ParsedUrl):
 
     #get the map object from the database for the corresponding
     map_item = map.get_replacement_map_item_with_number_to_replace(number_to_replace)
@@ -60,8 +60,8 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
     'replacementphonenumber': number_to_replace,
     'routingnumber': map_item.routingnumber,
     'poolphonenumber': pool_item.poolphonenumber,
-    'callstart': proxy_date_time.min.strftime("%Y-%m-%d %H:%M:%S"),
-    'callend': proxy_date_time.min.strftime("%Y-%m-%d %H:%M:%S"),
+    'callstart': ProxyDateTime.min.strftime("%Y-%m-%d %H:%M:%S"),
+    'callend': ProxyDateTime.min.strftime("%Y-%m-%d %H:%M:%S"),
     'clicksource': parsed_url.utm_source,
     'url': parsed_url.url,
     'utm_source': parsed_url.utm_source,

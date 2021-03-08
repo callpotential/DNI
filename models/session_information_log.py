@@ -1,4 +1,4 @@
-class session_information_log:
+class SessionInformationLog:
 
     def __init__(self,row:dict):
         """This is the class that represents the items in the session information log table.

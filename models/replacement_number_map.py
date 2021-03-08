@@ -1,4 +1,4 @@
-class replacement_number_map:
+class ReplacementNumberMap:
 
     def __init__(self, map_dict:dict):
         """

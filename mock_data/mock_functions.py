@@ -1,4 +1,4 @@
-from shared_modules.parsed_url import parsed_url
+from shared_modules.parsed_url import ParsedUrl
 
 
 def mock_assignment_pool_dict():
@@ -63,7 +63,7 @@ def mock_replacement_number_map_dict():
 
 
 def mock_parsed_url():
-    parsed_url_item = parsed_url('www.google.com')
+    parsed_url_item = ParsedUrl('www.google.com')
     parsed_url_item.url = 'www.google.com'
     parsed_url_item.utm_source = 'NULL'
     parsed_url_item.utm_medium = 'NULL'

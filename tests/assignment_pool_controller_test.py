@@ -2,11 +2,11 @@ from datetime import datetime
 import unittest
 from unittest.mock import patch
 from mock_data.mock_functions import mock_assignment_pool_dict
-from models.assignment_pool import assignment_pool
+from models.assignment_pool import AssignmentPool
 import controllers.assignment_pool_controller as pool
 
 
-class assignment_pool_controller_test(unittest.TestCase):
+class AssignmentPoolControllerTest(unittest.TestCase):
     """
     unit test for assignment pool controller
     """
@@ -48,7 +48,7 @@ class assignment_pool_controller_test(unittest.TestCase):
         mock_object['ttl'] = '2020-01-01 12:00:00'
         mock_object['sessionid'] = 7
 
-        pool.update_assignment_pool_item_ttl(assignment_pool(mock_object))
+        pool.update_assignment_pool_item_ttl(AssignmentPool(mock_object))
 
         dbi_update.assert_called_with(
             "UPDATE assignment_pool SET ttl = '2020-01-01 12:00:00' WHERE sessionid = 7")

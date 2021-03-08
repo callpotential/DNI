@@ -1,6 +1,6 @@
 from shared_modules.database_interface import *
 import models.session_information_log as session
-from models.session_information_log import session_information_log
+from models.session_information_log import SessionInformationLog
 from shared_modules.logger import trace_logging
 
 
@@ -12,10 +12,10 @@ def get_session_item_with_click_id(clickid:str):
 
     sql = "SELECT * FROM session_information_log WHERE clickid = '" + clickid + "'"
 
-    my_result = database_interface().select(sql)
+    my_result = DatabaseInterface().select(sql)
 
     if my_result:
-        session_item = session_information_log(my_result[0])
+        session_item = SessionInformationLog(my_result[0])
         return session_item
     else:
         return False
@@ -28,7 +28,7 @@ def get_session_item_with_click_id(clickid:str):
 
 @trace_logging()
 def create_new_session_item(session_object_dict):
-    session_item = session_information_log(session_object_dict)
+    session_item = SessionInformationLog(session_object_dict)
 
     session_dict = session_item.__dict__
     session_dict.pop("sessionid")
@@ -37,7 +37,7 @@ def create_new_session_item(session_object_dict):
     values = ', '.join(values_handler(x) for x in session_dict.values())
     sql = "INSERT INTO session_information_log ( %s ) VALUES ( %s );" % (columns, values)
 
-    id = database_interface().insert(sql)
+    id = DatabaseInterface().insert(sql)
     session_item.sessionid = id
 
     return session_item
