@@ -62,6 +62,8 @@ def mock_replacement_number_map_dict():
     return data
 
 
+# This gets mocked in the tests, but it ends up calling the ParsedUrl constructor anyway.
+#  Tests run as expected regardless
 def mock_parsed_url():
     parsed_url_item = ParsedUrl('www.google.com')
     parsed_url_item.url = 'www.google.com'

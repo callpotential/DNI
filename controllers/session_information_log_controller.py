@@ -47,3 +47,5 @@ def values_handler(x):
         return "'" + x.replace('/', '_') + "'"
     elif type(x) == int:
         return str(x)
+    else:
+        return str(x)

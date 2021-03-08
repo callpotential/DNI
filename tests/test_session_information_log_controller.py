@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 import controllers.session_information_log_controller as session
 from mock_data.mock_functions import mock_session_information_log_dict
+from models.session_information_log import SessionInformationLog
 
 
 class SessionInformationLogControllerTest(unittest.TestCase):
@@ -26,6 +27,15 @@ class SessionInformationLogControllerTest(unittest.TestCase):
 
         result = session.get_session_item_with_click_id('not valid click id')
         self.assertFalse(result)
+
+    @patch('shared_modules.database_interface.DatabaseInterface.insert')
+    def test_create_new_session_item(self, dbi_insert):
+        dbi_insert.return_value = 1234
+
+        result = session.create_new_session_item(mock_session_information_log_dict())
+
+        self.assertEqual(result.sessionid, 1234)
+        dbi_insert.assert_called_with("INSERT INTO session_information_log ( `poolid`, `businessid`, `numberroutedsuccessfully`, `replacementphonenumber`, `routingnumber`, `poolphonenumber`, `callstart`, `callend`, `clicksource`, `url`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_adgroup`, `utm_keyword`, `utm_device`, `utm_brandtype`, `utm_content`, `gclsrc`, `gclid`, `fbclid`, `clickid` ) VALUES ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'test' );")
 
 
 if __name__ == '__main__':
