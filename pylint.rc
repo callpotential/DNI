@@ -1,5 +1,5 @@
 [MASTER]
-init-hook='import sys; sys.path.append("./dni_marketing_poc")'
+init-hook='import sys; sys.path.append("./DNI")'
 [FORMAT]
 max-line-length=240
 
