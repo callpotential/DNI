@@ -1,4 +1,4 @@
-
+from SharedModules.ParsedUrl import parsed_url
 
 
 def mock_assignment_pool_dict():
@@ -10,6 +10,7 @@ def mock_assignment_pool_dict():
     data['assignedroutingnumber'] = '098-765-4321'
     data['sessionid'] = 3
     return data
+
 
 # TODO ASH This needs type checking
 def mock_session_information_log_dict():
@@ -40,6 +41,7 @@ def mock_session_information_log_dict():
     data['clickid'] = 'test'
     return data
 
+
 def mock_business_config_dict():
     data = dict()
     data['businessid'] = 1
@@ -51,9 +53,29 @@ def mock_business_config_dict():
     data['featuretoggle'] = 1
     return data
 
+
 def mock_replacement_number_map_dict():
     data = dict()
     data['replacementphonenumber'] = '111-111-2222'
     data['routingnumber'] = '111-111-2223'
     data['poolid'] = 1
     return data
+
+
+def mock_parsed_url():
+    parsed_url_item = parsed_url('www.google.com')
+    parsed_url_item.url = 'www.google.com'
+    parsed_url_item.utm_source = 'NULL'
+    parsed_url_item.utm_medium = 'NULL'
+    parsed_url_item.utm_campaign = 'NULL'
+    parsed_url_item.utm_adgroup = 'NULL'
+    parsed_url_item.utm_keyword = 'NULL'
+    parsed_url_item.utm_device = 'NULL'
+    parsed_url_item.utm_brandtype = 'NULL'
+    parsed_url_item.utm_content = 'NULL'
+    parsed_url_item.gclsrc = 'NULL'
+    parsed_url_item.gclid = 'NULL'
+    parsed_url_item.fbclid = 'NULL'
+    parsed_url_item.twclid = 'NULL'
+    parsed_url_item.clickid = 'NULL'
+    return parsed_url_item

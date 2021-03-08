@@ -89,13 +89,3 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
         return reserved_pool_item
 
 
-# url = ('?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_'
-#         'NonBrand_Desktop_Exact&utm_adgroup=City:+Aurora&utm_keyword=s'
-#         'torage%20near%20me&utm_device=c&utm_brandtype=NonBrand&gclid=E'
-#         'AIaIQobChMItoGPhJ-r7gIVkcDACh1fcQguEAAYAiAAEgLGlvD_BwE&gclsrc=aw.ds')
-
-url = ("?utm_source=facebook&utm_medium=cpc&utm_campaign=3Q-Platform-Core-Retargeting&utm_content=Facebook_Desktop_Feed-Dev_Webinar_TwilioQ12021Releases_V_1_Ben&fbclid=IwAR1L_eS5f3Zp-_b17778OPqTNOChhe4dfdklXu-kkk61NhhhhheMXcwKP6Q")
-number_to_replace = "234-123-4323"
-print(get_assignment_pool_number(url, number_to_replace))
-
-

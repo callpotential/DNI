@@ -4,7 +4,11 @@
 import unittest
 from unittest.mock import patch
 import Services.NumberAssignment.NumberAssignmentService as NAS
-from MockData.MockFunctions import mock_session_information_log_dict
+from MockData.MockFunctions import mock_session_information_log_dict, mock_parsed_url, mock_business_config_dict, \
+    mock_replacement_number_map_dict, mock_assignment_pool_dict
+from Models.AssignmentPool import AssignmentPool
+from Models.BusinessConfig import BusinessConfig
+from Models.ReplacementNumberMap import ReplacementNumberMap
 from Models.SessionInformationLog import SessionInformationLog
 
 
@@ -41,6 +45,35 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(result)
         get_session_item.assert_called_with(click_id)
         refresh_ttl.assert_not_called
+
+    @patch('Controllers.ReplacementNumberMapController.get_replacement_map_item_with_number_to_replace')
+    @patch('Controllers.AssignmentPoolController.get_expired_pool_item_with_pool_id')
+    def test_should_return_false_when_no_existing_session(self, get_expired_item, get_replacement_map):
+        parsed_url = mock_parsed_url()
+        get_replacement_map.return_value = ReplacementNumberMap(mock_replacement_number_map_dict())
+        get_expired_item.return_value = False
+
+        result = NAS.create_session_and_reserve_number('111-222-3434', parsed_url)
+
+        self.assertFalse(result)
+
+    @patch('Controllers.ReplacementNumberMapController.get_replacement_map_item_with_number_to_replace')
+    @patch('Controllers.AssignmentPoolController.get_expired_pool_item_with_pool_id')
+    @patch('Controllers.AssignmentPoolController.reserve_number_from_pool')
+    @patch('Controllers.BusinessConfigController.get_business_object_with_business_id')
+    @patch('Controllers.SessionInformationLogController.create_new_session_item')
+    def test_should_return_false_when_pool_is_full(self, create_session_item, get_business_object,
+                                                          reserve_number, get_expired_item, get_replacement_map):
+        parsed_url = mock_parsed_url()
+        get_replacement_map.return_value = ReplacementNumberMap(mock_replacement_number_map_dict())
+        get_expired_item.return_value = AssignmentPool(mock_assignment_pool_dict())
+        get_business_object.return_value = BusinessConfig(mock_business_config_dict())
+        create_session_item.return_value = SessionInformationLog(mock_session_information_log_dict())
+        reserve_number.return_value = False
+
+        result = NAS.create_session_and_reserve_number('111-222-3434', parsed_url)
+
+        self.assertFalse(result)
 
 
 if __name__ == '__main__':
