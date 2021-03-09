@@ -81,7 +81,7 @@ def reserve_number_from_pool(session_id: int, routingnumber: str, poolid: int):
 
 @trace_logging()
 def set_ttl_expiry(pool_phone: str, duration_minutes: int = 10):
-    sql = "SELECT * FROM assignment_pool WHERE poolphonenumber = " + str(pool_phone)
+    sql = "SELECT * FROM assignment_pool WHERE poolphonenumber = '" + str(pool_phone) + "'"
     my_result = DatabaseInterface().select(sql)
 
     if len(my_result) > 0:
@@ -94,7 +94,7 @@ def set_ttl_expiry(pool_phone: str, duration_minutes: int = 10):
 @trace_logging()
 def register_assignment_pool_number(pool_phone_number: str, routing_number: str, business_id: str):
     ttl = ProxyDateTime.now().strftime("%Y-%m-%d %H:%M:%S")
-    sql = "INSERT INTO assignment_pool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid )" \
+    sql = "INSERT INTO assignment_pool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid ) " \
           "VALUES ( 'NULL', '" + business_id + "', '" + pool_phone_number + "', '" + ttl + "', '" + routing_number + "', 'NULL' );"
 
     return DatabaseInterface().insert(sql)

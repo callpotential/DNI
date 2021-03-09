@@ -1,6 +1,6 @@
 from datetime import datetime
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, call
 from mock_data.mock_functions import mock_assignment_pool_dict
 from models.assignment_pool import AssignmentPool
 import controllers.assignment_pool_controller as pool
@@ -110,6 +110,44 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         dbi_select.assert_called_with("SELECT * FROM assignment_pool WHERE poolid = 5 AND ttl < NOW()")
         self.assertFalse(result)
 
+    @patch('shared_modules.proxy_date_time.ProxyDateTime.now')
+    @patch('shared_modules.database_interface.DatabaseInterface.update')
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
+    def test_ttl_expiry_when_phone_exists(self, dbi_select, dbi_update, date_time):
+        mock_assignment_pool_dict_item = mock_assignment_pool_dict()
+        mock_assignment_pool_dict_item['sessionid'] = 14
+        dbi_select.return_value = [mock_assignment_pool_dict_item]  # This is called twice but will return the same value both times
+        dbi_update.return_value = []
+        date_time.return_value = datetime.strptime('2020-02-01 08:00:00', '%Y-%m-%d %H:%M:%S')
+
+        result = pool.set_ttl_expiry('123-123-1234', 20)
+
+        dbi_select.assert_has_calls([
+            call("SELECT * FROM assignment_pool WHERE poolphonenumber = '123-123-1234'"),
+            call("SELECT * FROM assignment_pool WHERE sessionid = 14")
+        ])
+        dbi_update.assert_called_with("UPDATE assignment_pool SET ttl = '2020-02-01 08:20:00' WHERE sessionid = 14" )
+        self.assertEqual(result.ttl, '2020-02-01 08:20:00')
+
+    @patch('shared_modules.database_interface.DatabaseInterface.select')
+    def test_ttl_expiry_when_phone_doesnt_exist(self, dbi_select):
+        dbi_select.return_value = []  # This is called twice but will return the same value both times
+
+        result = pool.set_ttl_expiry('123-123-1235', 21)
+
+        dbi_select.assert_called_with("SELECT * FROM assignment_pool WHERE poolphonenumber = '123-123-1235'")
+        self.assertFalse(result)
+
+    @patch('shared_modules.proxy_date_time.ProxyDateTime.now')
+    @patch('shared_modules.database_interface.DatabaseInterface.insert')
+    def test_register_assignment_pool_number(self, dbi_insert, date_time):
+        dbi_insert.return_value = 12345
+        date_time.return_value = datetime.strptime('2020-01-03 09:00:00', '%Y-%m-%d %H:%M:%S')
+
+        result = pool.register_assignment_pool_number('111-111-1114', '111-111-1115', '50')
+
+        dbi_insert.assert_called_with("INSERT INTO assignment_pool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid ) VALUES ( 'NULL', '50', '111-111-1114', '2020-01-03 09:00:00', '111-111-1115', 'NULL' );")
+        self.assertEqual(result, 12345)
 
 if __name__ == '__main__':
     unittest.main()

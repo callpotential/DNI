@@ -1,32 +1,29 @@
+from twilio.base import values
 from twilio.rest import Client
 
 ACCOUNT_SID = "AC99cc9b8bf49b325289f896b2bb86c7d6"
 ACCOUNT_TOKEN = "5793770e800dea86597819a14b53d63c"
+CALL_RECEIVE_URL = ''
+CALL_END_URL = ''
 
 
 class PhoneNumberService:
 
-    def __init__(self, sid: str = ACCOUNT_SID, token: str = ACCOUNT_TOKEN):
-        self.client = Client(ACCOUNT_SID, ACCOUNT_TOKEN)
-        self.call_receive_url = ""
-        self.call_end_url = ""
-
-    def call_receive_webhook(self, url):
-        self.call_receive_url = url
-
-    def call_end_webhook(self, url):
-        self.call_end_url = url
+    # TODO ASH Turn this into a singleton or a factory, and convert these to environment variables
+    def __init__(self, sid: str = ACCOUNT_SID, token: str = ACCOUNT_TOKEN, call_receive_url: str = CALL_RECEIVE_URL, call_end_url: str = CALL_END_URL):
+        self.client = Client(sid, token)
+        self.call_receive_url = call_receive_url
+        self.call_end_url = call_end_url
+        self.region = 'US'
 
     def list_available_phone_numbers(self, limit: int, area_code: str = None, locality: str = None) -> [str]:
-        available_phone_number_country = None
-        if area_code is None and locality is None:
-            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit)
-        elif area_code is not None and locality is not None:
-            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code, in_locality=locality)
-        elif area_code is not None and locality is None:
-            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code)
-        elif area_code is None and locality is not None:
-            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit, in_locality=locality)
+        # Convert to Twilio's version of unset values
+        if area_code is None:
+            area_code = values.unset
+        if locality is None:
+            locality = values.unset
+
+        available_phone_number_country = self.client.available_phone_numbers(self.region).local.list(limit=limit, area_code=area_code, in_locality=locality)
 
         list_of_number = []
         for item in available_phone_number_country:

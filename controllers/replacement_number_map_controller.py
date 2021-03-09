@@ -15,7 +15,7 @@ def get_replacement_map_item_with_number_to_replace(number_to_replace: str):
 
 @trace_logging()
 def insert_replacement_map(replacement_map: ReplacementNumberMap):
-    sql = "INSERT INTO replacementnumbermap ( replacementphonenumber, routingnumber, poolid )" \
+    sql = "INSERT INTO replacementnumbermap ( replacementphonenumber, routingnumber, poolid ) " \
           "VALUES ( '" + replacement_map.replacementphonenumber + "', '" + replacement_map.routingnumber + "', '" + replacement_map.poolid + "' );"
 
     return DatabaseInterface().insert(sql)
