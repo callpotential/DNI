@@ -3,38 +3,37 @@ from twilio.rest import Client
 ACCOUNT_SID = "AC99cc9b8bf49b325289f896b2bb86c7d6"
 ACCOUNT_TOKEN = "5793770e800dea86597819a14b53d63c"
 
-def get_list_of_numbers_from_area_code(client, limit, area_code, locality):
-    available_phone_number_country = None
 
-    if area_code is None and locality is None:
-        available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code, in_locality=locality)
-    elif area_code is not None and locality is not None:
-        available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code, in_locality=locality)
-    elif area_code is not None and locality is None:
-        available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code)
-    elif area_code is None and locality is not None:
-        available_phone_number_country = client.available_phone_numbers('US').local.list(limit=limit, in_locality=locality)
+class PhoneNumberService:
 
-    list_of_number = []
-    for item in available_phone_number_country:
-        list_of_number.append(item.phone_number)
+    def __init__(self, sid: str = ACCOUNT_SID, token: str = ACCOUNT_TOKEN):
+        self.client = Client(ACCOUNT_SID, ACCOUNT_TOKEN)
+        self.call_receive_url = ""
+        self.call_end_url = ""
 
-    return list_of_number
+    def call_receive_webhook(self, url):
+        self.call_receive_url = url
 
-client = Client(ACCOUNT_SID, ACCOUNT_TOKEN)
-# print(get_list_of_numbers_from_area_code(client, 2, 563, 'Chicago'))
-# print(get_list_of_numbers_from_area_code(client, 2, 563, None))
-# print(get_list_of_numbers_from_area_code(client, 2, None, 'Chicago'))
-# print(get_list_of_numbers_from_area_code(client, 2, None, None))
+    def call_end_webhook(self, url):
+        self.call_end_url = url
 
-def create_new_phone_number(client, phone_number):
+    def list_available_phone_numbers(self, limit: int, area_code: str = None, locality: str = None) -> [str]:
+        available_phone_number_country = None
+        if area_code is None and locality is None:
+            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit)
+        elif area_code is not None and locality is not None:
+            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code, in_locality=locality)
+        elif area_code is not None and locality is None:
+            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit, area_code=area_code)
+        elif area_code is None and locality is not None:
+            available_phone_number_country = self.client.available_phone_numbers('US').local.list(limit=limit, in_locality=locality)
 
-    voice_url = "http://7229cde20d08.ngrok.io/answer_forward?phone={0}".format(phone_number)
-    status_url = "http://7229cde20d08.ngrok.io/end"
+        list_of_number = []
+        for item in available_phone_number_country:
+            list_of_number.append(item.phone_number)
 
-    incoming_phone_number = client.incoming_phone_numbers.create(phone_number=str(phone_number),voice_url=voice_url,status_callback=status_url)
-    phone_number = incoming_phone_number.phone_number
+        return list_of_number
 
-number = get_list_of_numbers_from_area_code(client, 2, 563, 'Chicago')[0]
-print(number)
-create_new_phone_number(client, number)
+    # TODO ASH Figure out what is returned when the number is not properly provisioned
+    def create_new_phone_number(self, phone_number: str):
+        self.client.incoming_phone_numbers.create(phone_number=phone_number, voice_url=self.call_receive_url, status_callback=self.call_end_url)
