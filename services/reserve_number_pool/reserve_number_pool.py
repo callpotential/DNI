@@ -12,7 +12,7 @@ def handler(event, context):
     replacement_map.replacementphonenumber = event['replace_num']
     replacement_map.routingnumber = event['forward_num']
     business_id = event['business_id']  # TODO ASH This can be swapped to some other unique business identifier
-    requested_numbers = event['requested_phone']
+    requested_numbers = event['requested_numbers']
 
     service = PhoneNumberService()
     for phone_number in requested_numbers:

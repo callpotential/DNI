@@ -7,9 +7,10 @@ def handler(event, context):
 
     pool_size = event['pool_size']
     area_code = event['area_code']
+    locality = event['locality']
 
     service = PhoneNumberService()
-    avail_phone_nums = service.list_available_phone_numbers(pool_size, area_code)
+    avail_phone_nums = service.list_available_phone_numbers(pool_size, area_code, locality)
 
     resp = avail_phone_nums
     get_logger().log_handler_exit(resp)

@@ -2,7 +2,7 @@ import controllers.session_information_log_controller as session
 import controllers.assignment_pool_controller as pool
 import controllers.replacement_number_map_controller as map
 import shared_modules.parsed_url as url_parser
-from shared_modules.logger import trace_logging
+from shared_modules.logger import trace_logging, get_logger
 from shared_modules.proxy_date_time import ProxyDateTime
 
 @trace_logging()
@@ -83,3 +83,16 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
         #pool is full
         return False
     return reserved_pool_item
+
+
+@trace_logging()
+def handler(event, context):
+    get_logger().log_handler_enter(event, context)
+
+    url = event['url']
+    number_to_replace = event['phone']
+
+    resp = get_assignment_pool_number(url, number_to_replace)
+
+    get_logger().log_handler_exit(resp)
+    return resp
