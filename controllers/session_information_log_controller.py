@@ -19,10 +19,25 @@ def get_session_item_with_click_id(clickid:str):
         return session_item
     return False
 
-# def get_next_session_id():
-#     sql = "SELECT * FROM session_information_log WHERE max(sessionid)"
-#     my_result = database_interface().select(sql)
-#     print(my_result)
+
+@trace_logging()
+def get_session_item_with_pool_number(pool_number: str):
+    sql = "SELECT * FROM session_information_log WHERE poolphonenumber = '" + pool_number + "'"
+    my_result = DatabaseInterface().select(sql)
+
+    if len(my_result) > 0:
+        return SessionInformationLog(my_result[0])
+    else:
+        return False
+
+
+@trace_logging()
+def get_routing_number_from_pool_number(pool_number: str):
+    session_item = get_session_item_with_pool_number(pool_number)
+    if session_item is False:
+        return False
+    else:
+        return session_item.routingnumber
 
 
 @trace_logging()

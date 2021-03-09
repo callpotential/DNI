@@ -15,6 +15,14 @@ class Logger:
     def __init__(self, level: LogLevel = LogLevel.all) -> None:
         self.level = level
 
+    # Used to log the entrance to a Lambda handler
+    def log_handler_enter(self, event, context) -> None:
+        pass
+
+    # Used to log the entrance to a Lambda handler
+    def log_handler_exit(self, message: str) -> None:
+        pass
+
     # Used to log entrance and exits of functions
     def log_trace(self, message: str) -> None:
         self.__log(LogLevel.trace, "TRACE: " + message)

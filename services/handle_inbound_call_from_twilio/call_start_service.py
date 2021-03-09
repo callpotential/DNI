@@ -1,9 +1,23 @@
-import controllers.assignment_pool_controller as pool
-import controllers.session_information_log_controller as session
+from twilio.twiml.voice_response import VoiceResponse
 
-# def update_session_with_call_start(phone_number):
-#     if pool.is_phone_number_active(phone_number):
-#         session.set_call_start_for_session(phone_number)
-#         return "Session call start time updated."
-#     elif:
-#         return "Phone number is not active."
+from controllers.session_information_log_controller import get_routing_number_from_pool_number
+from shared_modules.logger import get_logger
+
+
+def handler(event, context):
+    get_logger().log_handler_enter(event, context)
+
+    # Phone number that was called
+    to = event['to']
+    if to is None:
+        return None
+
+    routing_phone = get_routing_number_from_pool_number(to)
+    if routing_phone is False:
+        return None
+
+    resp = VoiceResponse()
+    resp.dial(routing_phone)
+
+    get_logger().log_handler_exit(str(resp))
+    return str(resp)

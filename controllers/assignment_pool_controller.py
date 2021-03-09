@@ -77,3 +77,15 @@ def reserve_number_from_pool(session_id: int, routingnumber: str, poolid: int):
         pool_item.assignedroutingnumber = routingnumber
         update_assignment_pool_item(pool_item)
         return pool_item
+
+
+@trace_logging()
+def set_ttl_expiry(pool_phone: str, duration_minutes: int = 10):
+    sql = "SELECT * FROM assignment_pool WHERE poolphonenumber = " + str(pool_phone)
+    my_result = DatabaseInterface().select(sql)
+
+    if len(my_result) > 0:
+        session_id = AssignmentPool(my_result[0]).sessionid
+        return refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes)
+    else:
+        return False
