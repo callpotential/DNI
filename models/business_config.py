@@ -1,10 +1,49 @@
 class BusinessConfig:
 
-    def __init__(self, business_dict:dict):
-        self.businessid = business_dict['businessid']
-        self.active = business_dict['active']
-        self.cpmaincustomer = business_dict['cpmaincustomer']
-        self.defaultttl = business_dict['defaultttl']
-        self.emailnotifications = business_dict['emailnotifications']
-        self.emailaddress = business_dict['emailaddress']
-        self.featuretoggle = business_dict['featuretoggle']
+    def __init__(self):
+        """This init is for creating an object from a database response"""
+        self.businessid = None
+        self.active = None
+        self.cpmaincustomer = None
+        self.defaultttl = None
+        self.emailnotifications = None
+        self.emailaddress = None
+        self.featuretoggle = None
+
+    def set_businessid(self, businessid: int) -> 'BusinessConfig':
+        self.businessid = businessid
+        return self
+
+    def set_active(self, active: bool) -> 'BusinessConfig':
+        self.active = active
+        return self
+
+    def set_cpmaincustomer(self, cpmaincustomer: bool) -> 'BusinessConfig':
+        self.cpmaincustomer = cpmaincustomer
+        return self
+
+    def set_defaultttl(self, defaultttl: int) -> 'BusinessConfig':
+        self.defaultttl = defaultttl
+        return self
+
+    def set_emailnotifications(self, emailnotifications: bool) -> 'BusinessConfig':
+        self.emailnotifications = emailnotifications
+        return self
+
+    def set_emailaddress(self, emailaddress: str) -> 'BusinessConfig':
+        self.emailaddress = emailaddress
+        return self
+
+    def set_featuretoggle(self, featuretoggle: str) -> 'BusinessConfig':
+        self.featuretoggle = featuretoggle
+        return self
+
+    def from_dict(self, row: dict):
+        """This init is for creating an object from a database response"""
+        self.set_businessid(row['businessid'])
+        self.set_active(row['active'])
+        self.set_cpmaincustomer(row['cpmaincustomer'])
+        self.set_defaultttl(row['defaultttl'])
+        self.set_emailnotifications(row['emailnotifications'])
+        self.set_emailaddress(row['emailaddress'])
+        self.set_featuretoggle(row['featuretoggle'])
