@@ -35,8 +35,8 @@ def update_assignment_pool_item(item: AssignmentPool):
     sql = ("UPDATE assignment_pool SET ttl = '" +
            str(item.ttl) + "', sessionid = " +
            str(item.sessionid) + ", assignedroutingnumber = '" +
-           item.assignedroutingnumber + "' WHERE poolphonenumber = '" +
-           item.poolphonenumber + "'")
+           item.assignedroutingnumber.get_with_dashes() + "' WHERE poolphonenumber = '" +
+           item.poolphonenumber.get_with_dashes() + "'")
 
     my_result = DatabaseInterface().update(sql)
 
@@ -75,9 +75,9 @@ def reserve_number_from_pool(session_id: int, routingnumber: str, poolid: int):
     if pool_item is None:
         return None
 
-    pool_item.ttl = ProxyDateTime.now() + timedelta(minutes=120)
-    pool_item.sessionid = session_id
-    pool_item.assignedroutingnumber = routingnumber
+    pool_item.set_ttl(ProxyDateTime.now() + timedelta(minutes=120))
+    pool_item.set_sessionid(session_id)
+    pool_item.set_assignedroutingnumber(routingnumber)
     update_assignment_pool_item(pool_item)
     return pool_item
 

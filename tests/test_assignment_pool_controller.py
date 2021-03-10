@@ -99,7 +99,7 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         dbi_update.assert_called_with("UPDATE assignment_pool SET ttl = '2020-01-01 10:00:00', sessionid = 2, assignedroutingnumber = '123-456-1212' WHERE poolphonenumber = '123-456-7890'")
         self.assertEqual(result.ttl, datetime.strptime('2020-01-01 10:00:00', '%Y-%m-%d %H:%M:%S'))
         self.assertEqual(result.sessionid, 2)
-        self.assertEqual(result.assignedroutingnumber, '123-456-1212')
+        self.assertEqual(result.assignedroutingnumber.get_with_dashes(), '123-456-1212')
 
     @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_reserve_number_from_pool_when_none_exists(self, dbi_select):

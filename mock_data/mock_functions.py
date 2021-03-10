@@ -19,26 +19,26 @@ def mock_session_information_log_dict():
     data['sessionid'] = 1
     data['businessid'] = 1
     data['numberroutedsuccessfully'] = 1
-    data['replacementphonenumber'] = 1
-    data['routingnumber'] = 1
-    data['poolphonenumber'] = 1
-    data['callstart'] = 1
-    data['callend'] = 1
-    data['clickid'] = 1
-    data['clicksource'] = 1
-    data['url'] = 1
-    data['utm_source'] = 1
-    data['utm_medium'] = 1
-    data['utm_campaign'] = 1
-    data['utm_adgroup'] = 1
-    data['utm_keyword'] = 1
-    data['utm_device'] = 1
-    data['utm_brandtype'] = 1
-    data['utm_content'] = 1
-    data['gclsrc'] = 1
-    data['gclid'] = 1
-    data['fbclid'] = 1
-    data['clickid'] = 'test'
+    data['replacementphonenumber'] = '123-456-7890'
+    data['routingnumber'] = '123-456-7890'
+    data['poolphonenumber'] = '123-456-7890'
+    data['callstart'] = '2021-01-01 12:00:00'
+    data['callend'] = '2021-01-01 12:00:00'
+    data['clickid'] = 'NULL'
+    data['clicksource'] = 'NULL'
+    data['url'] = 'NULL'
+    data['utm_source'] = 'NULL'
+    data['utm_medium'] = 'NULL'
+    data['utm_campaign'] = 'NULL'
+    data['utm_adgroup'] = 'NULL'
+    data['utm_keyword'] = 'NULL'
+    data['utm_device'] = 'NULL'
+    data['utm_brandtype'] = 'NULL'
+    data['utm_content'] = 'NULL'
+    data['gclsrc'] = 'NULL'
+    data['gclid'] = 'NULL'
+    data['fbclid'] = 'NULL'
+    data['clickid'] = 'NULL'
     return data
 
 

@@ -1,25 +1,32 @@
 import re
 
+from shared_modules.logger import trace_logging
+
 
 class PhoneNumber:
 
+    @trace_logging()
     def __init__(self, phone_number: str = None):
         self.phone_number = phone_number
         if phone_number is not None:
             self.parse_from_string(phone_number)
 
+    @trace_logging()
     def parse_from_twilio(self, phone_number: str):
         # Remove the leading +
         self.phone_number = phone_number[1:]
 
+    @trace_logging()
     def parse_from_string(self, phone_number: str) -> None:
         # Pull out all the digits and join them together
         matches = re.findall('\\d*', phone_number)
         self.phone_number = ''.join(matches)
 
+    @trace_logging()
     def get_twilio_format(self):
         return '+' + self.phone_number.rjust(11, '0')
 
+    @trace_logging()
     def get_with_dashes(self):
         result = '-'.join([
             self.get_region(),
