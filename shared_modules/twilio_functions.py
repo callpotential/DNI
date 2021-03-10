@@ -18,8 +18,7 @@ class PhoneNumberService:
         self.call_end_url = call_end_url
         self.region = 'US'
 
-
-    @trace_logging
+    @trace_logging()
     def list_available_phone_numbers(self, limit: int, area_code: str = None, locality: str = None) -> [str]:
         # Convert to Twilio's version of unset values
         if area_code is None:
@@ -36,6 +35,6 @@ class PhoneNumberService:
         return list_of_number
 
     # TODO ASH Figure out what is returned when the number is not properly provisioned
-    @trace_logging
+    @trace_logging()
     def create_new_phone_number(self, phone_number: PhoneNumber):
         self.client.incoming_phone_numbers.create(phone_number=phone_number.get_twilio_format(), voice_url=self.call_receive_url, status_callback=self.call_end_url)

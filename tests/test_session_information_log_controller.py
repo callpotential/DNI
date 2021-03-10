@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch
 import controllers.session_information_log_controller as session
 from mock_data.mock_functions import mock_session_information_log_dict
-from models.session_information_log import SessionInformationLog
 
 
 class SessionInformationLogControllerTest(unittest.TestCase):
@@ -35,7 +34,7 @@ class SessionInformationLogControllerTest(unittest.TestCase):
         result = session.create_new_session_item(mock_session_information_log_dict())
 
         self.assertEqual(result.sessionid, 1234)
-        dbi_insert.assert_called_with("INSERT INTO session_information_log ( `poolid`, `businessid`, `numberroutedsuccessfully`, `replacementphonenumber`, `routingnumber`, `poolphonenumber`, `callstart`, `callend`, `clicksource`, `url`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_adgroup`, `utm_keyword`, `utm_device`, `utm_brandtype`, `utm_content`, `gclsrc`, `gclid`, `fbclid`, `clickid` ) VALUES ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'test' );")
+        dbi_insert.assert_called_with("INSERT INTO session_information_log ( `poolid`, `businessid`, `numberroutedsuccessfully`, `replacementphonenumber`, `routingnumber`, `poolphonenumber`, `callstart`, `callend`, `clicksource`, `url`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_adgroup`, `utm_keyword`, `utm_device`, `utm_brandtype`, `utm_content`, `gclsrc`, `gclid`, `fbclid`, `clickid` ) VALUES ( 1, 1, 1, 1234567890, 1234567890, 1234567890, 2021-01-01 12:00:00, 2021-01-01 12:00:00, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL' );")
 
     @patch('shared_modules.database_interface.DatabaseInterface.select')
     def test_get_routing_num_from_pool_num(self, dbi_select):

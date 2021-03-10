@@ -1,25 +1,25 @@
+import copy
 from urllib import parse
-
 from shared_modules.logger import trace_logging
 
 PARSING_TEMPLATE = {
-            "utm_source": "NULL",
-            "utm_medium": "NULL",
-            "utm_campaign": "NULL",
-            "utm_adgroup": "NULL",
-            "utm_keyword": "NULL",
-            "utm_device": "NULL",
-            "utm_brandtype": "NULL",
-            "utm_content": "NULL",
-            "gclsrc": "NULL",
-            "gclid": "NULL",
-            "fbclid": "NULL",
-            "twclid": "NULL"
-        }
+    "utm_source": "NULL",
+    "utm_medium": "NULL",
+    "utm_campaign": "NULL",
+    "utm_adgroup": "NULL",
+    "utm_keyword": "NULL",
+    "utm_device": "NULL",
+    "utm_brandtype": "NULL",
+    "utm_content": "NULL",
+    "gclsrc": "NULL",
+    "gclid": "NULL",
+    "fbclid": "NULL",
+    "twclid": "NULL"
+}
 
 class ParsedUrl:
     def __init__(self, url):
-        parsing_template = PARSING_TEMPLATE
+        parsing_template = copy.deepcopy(PARSING_TEMPLATE)
         parse.urlsplit(url)
         parse.parse_qs(parse.urlsplit(url).query)
         params = dict(parse.parse_qsl(parse.urlsplit(url).query))

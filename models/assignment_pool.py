@@ -1,7 +1,7 @@
 import datetime
 from models.phone_number import PhoneNumber
 from shared_modules.logger import trace_logging
-from shared_modules.proxy_date_time import sql_to_datetime
+from shared_modules.proxy_date_time import ProxyDateTime
 
 
 class AssignmentPool:
@@ -23,6 +23,6 @@ class AssignmentPool:
         self.poolid = row['poolid']
         self.businessid = row['businessid']
         self.poolphonenumber = PhoneNumber(row['poolphonenumber'])
-        self.ttl = sql_to_datetime(row['ttl'])
+        self.ttl = ProxyDateTime.sql_to_datetime(row['ttl'])
         self.assignedroutingnumber = PhoneNumber(row['assignedroutingnumber'])
         self.sessionid = row['sessionid']
