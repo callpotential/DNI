@@ -1,11 +1,9 @@
 import re
-
 from shared_modules.logger import trace_logging
 
 
 class PhoneNumber:
 
-    @trace_logging()
     def __init__(self, phone_number: str = None):
         self.phone_number = phone_number
         if phone_number is not None:
@@ -35,24 +33,28 @@ class PhoneNumber:
             self.get_station_number()])
         return result.strip('-')
 
+    @trace_logging()
     def get_region(self) -> str:
         if len(self.phone_number) >= 11:
             return self.phone_number[-11:-10]
         else:
             return ''
 
+    @trace_logging()
     def get_area_code(self) -> str:
         if len(self.phone_number) >= 10:
             return self.phone_number[-10:-7]
         else:
             return ''
 
+    @trace_logging()
     def get_central_office_code(self) -> str:
         if len(self.phone_number) >= 7:
             return self.phone_number[-7:-4]
         else:
             return ''
 
+    @trace_logging()
     def get_station_number(self) -> str:
         if len(self.phone_number) >= 4:
             return self.phone_number[-4:]
