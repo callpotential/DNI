@@ -16,15 +16,15 @@ def handler(event, context):
 
     service = PhoneNumberService()
     for phone_number in requested_numbers:
-        if service.create_new_phone_number(phone_number) is False:
+        if service.create_new_phone_number(phone_number) is None:
             print('Error provisioning ' + phone_number)
             continue
 
-        if register_assignment_pool_number(phone_number, replacement_map.routingnumber, business_id) is False:
+        if register_assignment_pool_number(phone_number, replacement_map.routingnumber, business_id) is None:
             print('Error registering ' + phone_number)
             continue
 
-        if insert_replacement_map(replacement_map) is False:
+        if insert_replacement_map(replacement_map) is None:
             print('Error registering replacement map for ' + phone_number)
             continue
 

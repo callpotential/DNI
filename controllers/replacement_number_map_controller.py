@@ -8,9 +8,10 @@ def get_replacement_map_item_with_number_to_replace(number_to_replace: str):
 
     sql = "SELECT * FROM replacementnumbermap WHERE replacementphonenumber = '" + number_to_replace + "'"
     my_result = DatabaseInterface().select(sql)
-    new_map = ReplacementNumberMap(my_result[0])
-
-    return new_map
+    if len(my_result) > 0:
+        return ReplacementNumberMap(my_result[0])
+    else:
+        return None
 
 
 @trace_logging()

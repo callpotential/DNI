@@ -54,7 +54,7 @@ class SessionInformationLogControllerTest(unittest.TestCase):
 
         result = session.get_routing_number_from_pool_number('13')
 
-        self.assertEqual(result, False)
+        self.assertFalse(result)
         dbi_select.assert_called_with("SELECT * FROM session_information_log WHERE poolphonenumber = '13'")
 
 

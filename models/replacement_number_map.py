@@ -3,7 +3,7 @@ from models.phone_number import PhoneNumber
 
 class ReplacementNumberMap:
 
-    def __init__(self):
+    def __init__(self, row: dict):
         """
         :param replacementphonenumber: This is the phone number from the website that will be dynamically replaced.
         :param routingnumber: This is the phone number that the dynamic number forwards to after a someone calls in.
@@ -12,6 +12,9 @@ class ReplacementNumberMap:
         self.replacementphonenumber = None
         self.routingnumber = None
         self.poolid = None
+
+        if row is not None:
+            self.from_dict(row)
 
     def set_replacementphonenumber(self, replacementphonenumber: PhoneNumber) -> 'ReplacementNumberMap':
         self.replacementphonenumber = replacementphonenumber

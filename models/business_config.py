@@ -1,6 +1,6 @@
 class BusinessConfig:
 
-    def __init__(self):
+    def __init__(self, row: dict):
         """This init is for creating an object from a database response"""
         self.businessid = None
         self.active = None
@@ -9,6 +9,9 @@ class BusinessConfig:
         self.emailnotifications = None
         self.emailaddress = None
         self.featuretoggle = None
+
+        if row is not None:
+            self.from_dict(row)
 
     def set_businessid(self, businessid: int) -> 'BusinessConfig':
         self.businessid = businessid

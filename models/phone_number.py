@@ -5,7 +5,8 @@ class PhoneNumber:
 
     def __init__(self, phone_number: str = None):
         self.phone_number = phone_number
-        self.parse_from_string(phone_number)
+        if phone_number is not None:
+            self.parse_from_string(phone_number)
 
     def parse_from_twilio(self, phone_number: str):
         # Remove the leading +

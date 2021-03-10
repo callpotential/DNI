@@ -21,7 +21,7 @@ def get_assignment_pool_number(url:str, number_to_replace:str):
     if not pool_item:
         #If there is no pool item found create one.
         pool_item = create_session_and_reserve_number(number_to_replace, parsed_url_object)
-        if pool_item is not False:
+        if pool_item is not None:
             #If the pool item was reserved successfully return the pool item.
             return [pool_item.poolphonenumber, "A pool and session item was successfully created and reserved."]
         else:
@@ -35,7 +35,7 @@ def get_assignment_pool_number(url:str, number_to_replace:str):
 def refresh_ttl_for_existing_session(clickid:str):
     session_item = session.get_session_item_with_click_id(clickid)
 
-    if session_item is not False:
+    if session_item is not None:
         return pool.refresh_ttl_for_pool_number_with_session_id(session_item.sessionid,120)
     return False
 
@@ -46,8 +46,8 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
     map_item = map.get_replacement_map_item_with_number_to_replace(number_to_replace)
     pool_item = pool.get_expired_pool_item_with_pool_id(map_item.poolid)
 
-    if pool_item is False:
-        return False
+    if pool_item is None:
+        return None
 
     session_object_dict = {
     'sessionid': int(),
@@ -79,9 +79,9 @@ def create_session_and_reserve_number(number_to_replace:str, parsed_url:url_pars
     session_id = session_item.sessionid
     reserved_pool_item = pool.reserve_number_from_pool(session_id, map_item.routingnumber, pool_item.poolid)
 
-    if reserved_pool_item is False:
+    if reserved_pool_item is None:
         #pool is full
-        return False
+        return None
     return reserved_pool_item
 
 

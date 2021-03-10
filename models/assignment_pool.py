@@ -6,7 +6,7 @@ from shared_modules.proxy_date_time import sql_to_datetime
 
 class AssignmentPool:
 
-    def __init__(self):
+    def __init__(self, row: dict = None):
         """This init is for creating an object from a database response"""
         self.poolid = None
         self.businessid = None
@@ -14,6 +14,9 @@ class AssignmentPool:
         self.ttl = None
         self.assignedroutingnumber = None
         self.sessionid = None
+
+        if row is not None:
+            self.from_dict(row)
 
     def set_poolid(self, poolid: int) -> 'AssignmentPool':
         self.poolid = poolid

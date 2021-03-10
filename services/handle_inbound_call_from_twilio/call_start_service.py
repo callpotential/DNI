@@ -13,7 +13,7 @@ def handler(event, context):
         return None
 
     routing_phone = get_routing_number_from_pool_number(to)
-    if routing_phone is False:
+    if routing_phone is None:
         return None
 
     resp = VoiceResponse()

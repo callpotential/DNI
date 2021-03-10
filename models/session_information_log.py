@@ -5,7 +5,7 @@ from shared_modules.proxy_date_time import sql_to_datetime
 
 class SessionInformationLog:
 
-    def __init__(self):
+    def __init__(self, row: dict):
         """This is the class that represents the items in the session information log table.
         """
         self.sessionid = None
@@ -31,6 +31,9 @@ class SessionInformationLog:
         self.gclid = None
         self.fbclid = None
         self.clickid = None
+
+        if row is not None:
+            self.from_dict(row)
 
     def set_sessionid(self, sessionid: int) -> 'SessionInformationLog':
         self.sessionid = sessionid
