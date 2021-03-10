@@ -3,11 +3,14 @@ from shared_modules.logger import trace_logging
 
 
 class PhoneNumber:
+    phone_number: str
 
     def __init__(self, phone_number: str = None):
-        self.phone_number = phone_number
         if phone_number is not None:
             self.parse_from_string(phone_number)
+
+    def __str__(self):
+        return self.phone_number if self.phone_number else ''
 
     @trace_logging()
     def parse_from_twilio(self, phone_number: str):

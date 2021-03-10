@@ -1,7 +1,8 @@
 from datetime import timedelta
+from models.phone_number import PhoneNumber
 from shared_modules.database_interface import *
 from models.assignment_pool import AssignmentPool
-from shared_modules.logger import trace_logging, get_logger
+from shared_modules.logger import trace_logging
 from shared_modules.proxy_date_time import ProxyDateTime
 
 
@@ -35,8 +36,8 @@ def update_assignment_pool_item(item: AssignmentPool):
     sql = ("UPDATE assignment_pool SET ttl = '" +
            str(item.ttl) + "', sessionid = " +
            str(item.sessionid) + ", assignedroutingnumber = '" +
-           item.assignedroutingnumber.get_with_dashes() + "' WHERE poolphonenumber = '" +
-           item.poolphonenumber.get_with_dashes() + "'")
+           str(item.assignedroutingnumber) + "' WHERE poolphonenumber = '" +
+           str(item.poolphonenumber) + "'")
 
     my_result = DatabaseInterface().update(sql)
 
@@ -63,27 +64,26 @@ def refresh_ttl_for_pool_number_with_session_id(session_id: int, duration_minute
     if pool_item is None:
         return None
 
-    temp = ProxyDateTime.now() + timedelta(minutes=duration_minutes)
-    pool_item.ttl = temp.strftime("%Y-%m-%d %H:%M:%S")
+    pool_item.ttl = ProxyDateTime.now() + timedelta(minutes=duration_minutes)
     update_assignment_pool_item_ttl(pool_item)
     return pool_item
 
 
 @trace_logging()
-def reserve_number_from_pool(session_id: int, routingnumber: str, poolid: int):
+def reserve_number_from_pool(session_id: int, routingnumber: PhoneNumber, poolid: int):
     pool_item = get_expired_pool_item_with_pool_id(poolid)
     if pool_item is None:
         return None
 
-    pool_item.set_ttl(ProxyDateTime.now() + timedelta(minutes=120))
-    pool_item.set_sessionid(session_id)
-    pool_item.set_assignedroutingnumber(routingnumber)
+    pool_item.ttl = ProxyDateTime.now() + timedelta(minutes=120)
+    pool_item.sessionid = session_id
+    pool_item.assignedroutingnumber = routingnumber
     update_assignment_pool_item(pool_item)
     return pool_item
 
 
 @trace_logging()
-def set_ttl_expiry(pool_phone: str, duration_minutes: int = 10):
+def set_ttl_expiry(pool_phone: PhoneNumber, duration_minutes: int = 10):
     sql = "SELECT * FROM assignment_pool WHERE poolphonenumber = '" + str(pool_phone) + "'"
     my_result = DatabaseInterface().select(sql)
 
@@ -95,9 +95,9 @@ def set_ttl_expiry(pool_phone: str, duration_minutes: int = 10):
 
 
 @trace_logging()
-def register_assignment_pool_number(pool_phone_number: str, routing_number: str, business_id: str):
-    ttl = ProxyDateTime.now().strftime("%Y-%m-%d %H:%M:%S")
+def register_assignment_pool_number(pool_phone_number: PhoneNumber, routing_number: PhoneNumber, business_id: int):
+    ttl = ProxyDateTime.date_time_now_to_sql()
     sql = "INSERT INTO assignment_pool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid ) " \
-          "VALUES ( 'NULL', '" + business_id + "', '" + pool_phone_number + "', '" + ttl + "', '" + routing_number + "', 'NULL' );"
+          "VALUES ( 'NULL', '" + str(business_id) + "', '" + str(pool_phone_number) + "', '" + ttl + "', '" + str(routing_number) + "', 'NULL' );"
 
     return DatabaseInterface().insert(sql)

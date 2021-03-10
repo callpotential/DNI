@@ -10,7 +10,7 @@ class BusinessConfig:
     emailaddress: str
     featuretoggle: str
 
-    def __init__(self, row: dict):
+    def __init__(self, row: dict = None):
         """This init is for creating an object from a database response"""
         if row is not None:
             self.from_dict(row)

@@ -1,5 +1,7 @@
 from twilio.base import values
 from twilio.rest import Client
+from models.phone_number import PhoneNumber
+from shared_modules.logger import trace_logging
 
 ACCOUNT_SID = "AC99cc9b8bf49b325289f896b2bb86c7d6"
 ACCOUNT_TOKEN = "5793770e800dea86597819a14b53d63c"
@@ -16,6 +18,8 @@ class PhoneNumberService:
         self.call_end_url = call_end_url
         self.region = 'US'
 
+
+    @trace_logging
     def list_available_phone_numbers(self, limit: int, area_code: str = None, locality: str = None) -> [str]:
         # Convert to Twilio's version of unset values
         if area_code is None:
@@ -32,5 +36,6 @@ class PhoneNumberService:
         return list_of_number
 
     # TODO ASH Figure out what is returned when the number is not properly provisioned
-    def create_new_phone_number(self, phone_number: str):
-        self.client.incoming_phone_numbers.create(phone_number=phone_number, voice_url=self.call_receive_url, status_callback=self.call_end_url)
+    @trace_logging
+    def create_new_phone_number(self, phone_number: PhoneNumber):
+        self.client.incoming_phone_numbers.create(phone_number=phone_number.get_twilio_format(), voice_url=self.call_receive_url, status_callback=self.call_end_url)

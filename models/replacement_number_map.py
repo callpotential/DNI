@@ -12,7 +12,7 @@ class ReplacementNumberMap:
     routingnumber: PhoneNumber
     poolid: int
 
-    def __init__(self, row: dict):
+    def __init__(self, row: dict = None):
         if row is not None:
             self.from_dict(row)
 

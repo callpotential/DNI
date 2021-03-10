@@ -1,7 +1,7 @@
 from twilio.twiml.voice_response import VoiceResponse
-
 from controllers.assignment_pool_controller import set_ttl_expiry
 from controllers.session_information_log_controller import get_session_item_with_pool_number
+from models.phone_number import PhoneNumber
 from shared_modules.logger import get_logger
 
 
@@ -13,7 +13,7 @@ def handler(event, context):
     get_logger().log_handler_enter(event, context)
 
     # Phone number that was called
-    to = event['to']
+    to: PhoneNumber = PhoneNumber(event['to'])
     if to is None:
         return None
 

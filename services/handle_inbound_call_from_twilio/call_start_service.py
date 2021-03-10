@@ -1,6 +1,7 @@
 from twilio.twiml.voice_response import VoiceResponse
 
 from controllers.session_information_log_controller import get_routing_number_from_pool_number
+from models.phone_number import PhoneNumber
 from shared_modules.logger import get_logger
 
 
@@ -8,9 +9,7 @@ def handler(event, context):
     get_logger().log_handler_enter(event, context)
 
     # Phone number that was called
-    to = event['to']
-    if to is None:
-        return None
+    to: PhoneNumber = PhoneNumber(event['to'])
 
     routing_phone = get_routing_number_from_pool_number(to)
     if routing_phone is None:
