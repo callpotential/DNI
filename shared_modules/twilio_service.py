@@ -26,12 +26,12 @@ def answer_call():
 def answer_call_forward():
     """Respond to incoming phone calls with a brief message."""
     # Start our TwiML response
-    resp = VoiceResponse()
 
     pool_phone = request.args.get('phone')
     print(pool_phone)
     routing_phone = "+16505237877"
 
+    resp = VoiceResponse()
     resp.dial(routing_phone)
 
     return str(resp)

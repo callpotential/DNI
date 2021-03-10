@@ -1,24 +1,21 @@
-INSERT INTO `dni`.`assignmentpool` (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
+INSERT INTO AssignmentPool (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
 VALUES(1290390360,1290394444,"234-223-4001",now(),"234-223-4011",1);
-INSERT INTO `dni`.`assignmentpool` (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
+INSERT INTO AssignmentPool (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
 VALUES(1290390360,1290394444,"234-223-4002",now(),"234-223-4011",2);
-INSERT INTO `dni`.`assignmentpool` (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
+INSERT INTO AssignmentPool (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
 VALUES(1290390360,1290394444,"234-223-4003",now(),"234-223-4011",3);
-INSERT INTO `dni`.`assignmentpool` (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
+INSERT INTO AssignmentPool (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
 VALUES(1290390360,1290394444,"234-223-4004",now(),"234-223-4011",4);
-INSERT INTO `dni`.`assignmentpool` (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
+INSERT INTO AssignmentPool (`poolid`,`businessid`,`poolphonenumber`,`ttl`,`assignedroutingnumber`,`sessionid`)
 VALUES(1290390360,1290394444,"234-223-4005",now(),"234-223-4011",5);
-SELECT * FROM dni.assignmentpool;
 
-INSERT INTO `dni`.`businessconfig` (`businessid`,`active`,`cpmaincustomer`,`defaultttl`,`emailnotifications`,`emailaddress`,`featuretoggle`)
+INSERT INTO BusinessConfig (`businessid`,`active`,`cpmaincustomer`,`defaultttl`,`emailnotifications`,`emailaddress`,`featuretoggle`)
 VALUES(1290394444,True,True,120,True,"abusiness@business.com",null);
-SELECT * FROM dni.businessconfig;
 
-INSERT INTO `dni`.`replacementnumbermap` (`replacementphonenumber`, `routingnumber`, `poolid`)
+INSERT INTO ReplacementNumberMap (`replacementphonenumber`, `routingnumber`, `poolid`)
 VALUES ("234-123-4323", "234-223-4011", 1290390360);
-SELECT * FROM dni.replacementnumbermap;
 
-INSERT INTO `dni`.`sessioninformationlog`
+INSERT INTO SessionInformationLog
 (`sessionid`,`poolid`,`businessid`,`numberroutedsuccessfully`,`replacementphonenumber`,`routingnumber`,
 `poolphonenumber`,`callstart`,`callend`,`clickid`,`clicksource`,`url`)
 VALUES (1,1290390360,1290394444,True,"234-123-4323","234-223-4011","234-223-4001",NULL,NULL, 
