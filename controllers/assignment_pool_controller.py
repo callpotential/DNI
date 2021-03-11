@@ -11,7 +11,7 @@ def load_assignment_pool_item_session_id(session_id: int):
     """DB Interface
     Loads an assignment pool item using the wherecondition provided as the filter."""
 
-    sql = "SELECT * FROM assignment_pool WHERE sessionid = " + str(session_id)
+    sql = "SELECT * FROM assignmentpool WHERE sessionid = " + str(session_id)
     my_result = DatabaseInterface().select(sql)
     if len(my_result) > 0:
         return AssignmentPool(my_result[0])
@@ -24,7 +24,7 @@ def update_assignment_pool_item_ttl(item: AssignmentPool):
     """DB Interface
     Updates the ttl on an input assignment pool object."""
 
-    sql = ("UPDATE assignment_pool SET ttl = '" + str(item.ttl) + "' WHERE sessionid = " + str(item.sessionid))
+    sql = ("UPDATE assignmentpool SET ttl = '" + str(item.ttl) + "' WHERE sessionid = " + str(item.sessionid))
     my_result = DatabaseInterface().update(sql)
 
 
@@ -33,7 +33,7 @@ def update_assignment_pool_item(item: AssignmentPool):
     """DB Interface
     Updates the ttl on an input assignment pool object."""
 
-    sql = ("UPDATE assignment_pool SET ttl = '" +
+    sql = ("UPDATE assignmentpool SET ttl = '" +
            str(item.ttl) + "', sessionid = " +
            str(item.sessionid) + ", assignedroutingnumber = '" +
            str(item.assignedroutingnumber) + "' WHERE poolphonenumber = '" +
@@ -46,7 +46,7 @@ def update_assignment_pool_item(item: AssignmentPool):
 def get_expired_pool_item_with_pool_id(poolid: int):
     """DB Interface
     This function gets the next expired pool object with matching poolid."""
-    sql = "SELECT * FROM assignment_pool WHERE poolid = " + str(poolid) + " AND ttl < NOW()"
+    sql = "SELECT * FROM assignmentpool WHERE poolid = " + str(poolid) + " AND ttl < NOW()"
 
     my_result = DatabaseInterface().select(sql)
     if len(my_result) > 0:
@@ -84,7 +84,7 @@ def reserve_number_from_pool(session_id: int, routingnumber: PhoneNumber, poolid
 
 @trace_logging()
 def set_ttl_expiry(pool_phone: PhoneNumber, duration_minutes: int = 10):
-    sql = "SELECT * FROM assignment_pool WHERE poolphonenumber = '" + str(pool_phone) + "'"
+    sql = "SELECT * FROM assignmentpool WHERE poolphonenumber = '" + str(pool_phone) + "'"
     my_result = DatabaseInterface().select(sql)
 
     if len(my_result) > 0:
@@ -97,7 +97,7 @@ def set_ttl_expiry(pool_phone: PhoneNumber, duration_minutes: int = 10):
 @trace_logging()
 def register_assignment_pool_number(pool_phone_number: PhoneNumber, routing_number: PhoneNumber, business_id: int):
     ttl = ProxyDateTime.date_time_now_to_sql()
-    sql = "INSERT INTO assignment_pool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid ) " \
-          "VALUES ( 'NULL', '" + str(business_id) + "', '" + str(pool_phone_number) + "', '" + ttl + "', '" + str(routing_number) + "', 'NULL' );"
+    sql = "INSERT INTO assignmentpool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid ) " \
+          "VALUES ( 'NULL', '" + str(business_id) + "', '" + str(pool_phone_number) + "', '" + str(ttl) + "', '" + str(routing_number) + "', 'NULL' );"
 
     return DatabaseInterface().insert(sql)

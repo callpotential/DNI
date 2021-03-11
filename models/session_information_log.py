@@ -1,7 +1,6 @@
 import datetime
 from models.phone_number import PhoneNumber
 from shared_modules.logger import trace_logging
-from shared_modules.proxy_date_time import ProxyDateTime
 
 
 class SessionInformationLog:
@@ -46,8 +45,8 @@ class SessionInformationLog:
         self.replacementphonenumber = PhoneNumber(row['replacementphonenumber'])
         self.routingnumber = PhoneNumber(row['routingnumber'])
         self.poolphonenumber = PhoneNumber(row['poolphonenumber'])
-        self.callstart = ProxyDateTime.sql_to_datetime(row['callstart'])
-        self.callend = ProxyDateTime.sql_to_datetime(row['callend'])
+        self.callstart = row['callstart']
+        self.callend = row['callend']
         self.clicksource = row['clicksource']
         self.url = row['url']
         self.utm_source = row['utm_source']

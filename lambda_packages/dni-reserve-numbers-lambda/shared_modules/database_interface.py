@@ -1,6 +1,13 @@
 import mysql.connector
-
 from shared_modules.logger import trace_logging
+import os
+
+env = os.environ['ENVIRONMENT']
+print(env)
+LOCALUSER = 'root'
+LOCALPASSWORD = 'password'
+LOCALHOST = 'localhost'
+DATABASE = 'dni'
 
 LOCALUSER = 'root'
 LOCALPASSWORD = 'password'
