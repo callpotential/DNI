@@ -86,13 +86,5 @@ def create_session_and_reserve_number(number_to_replace: PhoneNumber, parsed_url
 
 
 @trace_logging()
-def handler(event, context):
-    get_logger().log_handler_enter(event, context)
-
-    url: str = event['url']
-    number_to_replace: PhoneNumber = PhoneNumber(event['phone'])
-
-    resp = get_assignment_pool_number(url, number_to_replace)
-
-    get_logger().log_handler_exit(resp)
-    return resp
+def number_assignment_get_number(number_to_replace: str, url: str):
+    return get_assignment_pool_number(url, PhoneNumber(number_to_replace))
