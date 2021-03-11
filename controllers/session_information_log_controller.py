@@ -2,7 +2,8 @@ from models.phone_number import PhoneNumber
 from shared_modules.database_interface import *
 from models.session_information_log import SessionInformationLog
 from shared_modules.logger import trace_logging
-
+from shared_modules.proxy_date_time import ProxyDateTime
+import datetime
 
 @trace_logging()
 def get_session_item_with_click_id(clickid: str):
@@ -10,7 +11,7 @@ def get_session_item_with_click_id(clickid: str):
     This function will reach out to the database and get a session item using the click id.
     """
 
-    sql = "SELECT * FROM session_information_log WHERE clickid = '" + str(clickid) + "'"
+    sql = "SELECT * FROM sessioninformationlog WHERE clickid = '" + str(clickid) + "'"
 
     my_result = DatabaseInterface().select(sql)
     if len(my_result) > 0:
@@ -21,7 +22,7 @@ def get_session_item_with_click_id(clickid: str):
 
 @trace_logging()
 def get_session_item_with_pool_number(pool_number: PhoneNumber):
-    sql = "SELECT * FROM session_information_log WHERE poolphonenumber = '" + str(pool_number) + "'"
+    sql = "SELECT * FROM sessioninformationlog WHERE poolphonenumber = '" + str(pool_number) + "'"
     my_result = DatabaseInterface().select(sql)
 
     if len(my_result) > 0:
@@ -48,7 +49,7 @@ def create_new_session_item(session_object_dict):
 
     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in session_dict.keys())
     values = ', '.join(values_handler(x) for x in session_dict.values())
-    sql = "INSERT INTO session_information_log ( %s ) VALUES ( %s );" % (columns, values)
+    sql = "INSERT INTO sessioninformationlog ( %s ) VALUES ( %s );" % (columns, values)
 
     session_item.sessionid = DatabaseInterface().insert(sql)
 
@@ -61,5 +62,7 @@ def values_handler(x):
         return "'" + x.replace('/', '_') + "'"
     elif type(x) == int:
         return str(x)
+    elif type(x) == datetime.datetime:
+        return "'" + str(x) + "'"
     else:
         return str(x)

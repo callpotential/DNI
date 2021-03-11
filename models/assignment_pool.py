@@ -23,6 +23,6 @@ class AssignmentPool:
         self.poolid = row['poolid']
         self.businessid = row['businessid']
         self.poolphonenumber = PhoneNumber(row['poolphonenumber'])
-        self.ttl = ProxyDateTime.sql_to_datetime(row['ttl'])
+        self.ttl = row['ttl']
         self.assignedroutingnumber = PhoneNumber(row['assignedroutingnumber'])
         self.sessionid = row['sessionid']

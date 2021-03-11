@@ -1,17 +1,17 @@
 import mysql.connector
-
 from shared_modules.logger import trace_logging
+import os
 
-LOCALUSER = 'root'
-LOCALPASSWORD = 'password'
-LOCALHOST = 'localhost'
-DATABASE = 'dni'
+USER = 'admin'
+PASSWORD = 'DFGHcvb2'
+HOST = 'database-2.ctzlovdjgfmd.us-east-2.rds.amazonaws.com'
+DATABASE = 'DNI'
 
 @trace_logging()
 def new_connector():
     """eventually there will be environment based toggles on this function to modify how it reaches out to the database."""
-    return mysql.connector.connect(user=LOCALUSER, password=LOCALPASSWORD,
-                              host=LOCALHOST,
+    return mysql.connector.connect(user=USER, password=PASSWORD,
+                              host=HOST,
                               database=DATABASE)
 
 
