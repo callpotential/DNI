@@ -1,7 +1,6 @@
 import datetime
 from models.phone_number import PhoneNumber
 from shared_modules.logger import trace_logging
-from shared_modules.proxy_date_time import ProxyDateTime
 
 
 class SessionInformationLog:

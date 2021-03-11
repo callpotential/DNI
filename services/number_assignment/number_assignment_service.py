@@ -62,8 +62,8 @@ def create_session_and_reserve_number(number_to_replace: PhoneNumber, parsed_url
         'replacementphonenumber': str(number_to_replace),
         'routingnumber': str(map_item.routingnumber),
         'poolphonenumber': str(pool_item.poolphonenumber),
-        'callstart': ProxyDateTime.date_time_to_sql(ProxyDateTime.min),
-        'callend': ProxyDateTime.date_time_to_sql(ProxyDateTime.min),
+        'callstart': ProxyDateTime.date_time_min_to_sql(),
+        'callend': ProxyDateTime.date_time_min_to_sql(),
         'clicksource': parsed_url.utm_source,
         'url': parsed_url.url,
         'utm_source': parsed_url.utm_source,
@@ -96,6 +96,3 @@ def handler(event, context):
 
     get_logger().log_handler_exit(resp)
     return resp
-
-get_assignment_pool_number("https://www.cubesmart.com/illinois-self-storage/chicago-self-storage/?utm_source=google&utm_medium=cpc&utm_campaign=G_IL_Chicago_Brand_BMM&utm_adgroup=CubeSmart_Core+Brand&utm_keyword=%2Bsmart%20%2Bcube%20%2Bstorage&utm_device=m&utm_brandtype=Brand&gclsrc=aw.ds&&gclid=Cj0KCQiAj9iBBhCJARIsAE9qRtCMZfs_I3sK0nm4J6wC9hmDFahTbCWy3pwi453o_cfTaWCvcK2PRKcaArn5EALw_wcB",
-                           "234-123-4323")

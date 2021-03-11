@@ -98,6 +98,6 @@ def set_ttl_expiry(pool_phone: PhoneNumber, duration_minutes: int = 10):
 def register_assignment_pool_number(pool_phone_number: PhoneNumber, routing_number: PhoneNumber, business_id: int):
     ttl = ProxyDateTime.date_time_now_to_sql()
     sql = "INSERT INTO assignmentpool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid ) " \
-          "VALUES ( 'NULL', '" + str(business_id) + "', '" + str(pool_phone_number) + "', '" + ttl + "', '" + str(routing_number) + "', 'NULL' );"
+          "VALUES ( 'NULL', '" + str(business_id) + "', '" + str(pool_phone_number) + "', '" + str(ttl) + "', '" + str(routing_number) + "', 'NULL' );"
 
     return DatabaseInterface().insert(sql)
