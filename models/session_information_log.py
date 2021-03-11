@@ -46,8 +46,8 @@ class SessionInformationLog:
         self.replacementphonenumber = PhoneNumber(row['replacementphonenumber'])
         self.routingnumber = PhoneNumber(row['routingnumber'])
         self.poolphonenumber = PhoneNumber(row['poolphonenumber'])
-        self.callstart = ProxyDateTime.sql_to_datetime(row['callstart'])
-        self.callend = ProxyDateTime.sql_to_datetime(row['callend'])
+        self.callstart = row['callstart']
+        self.callend = row['callend']
         self.clicksource = row['clicksource']
         self.url = row['url']
         self.utm_source = row['utm_source']
