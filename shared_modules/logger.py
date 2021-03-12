@@ -71,7 +71,10 @@ def trace_logging():
             result += "}"
             return result
         except TypeError:
-            return str(obj)
+            try:
+                return str(obj.__dict__)
+            except Exception as e:
+                return str(obj)
 
     def error_log(func):
         @functools.wraps(func)

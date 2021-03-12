@@ -5,8 +5,8 @@ from shared_modules.logger import trace_logging
 
 ACCOUNT_SID = "AC99cc9b8bf49b325289f896b2bb86c7d6"
 ACCOUNT_TOKEN = "5793770e800dea86597819a14b53d63c"
-CALL_RECEIVE_URL = ''
-CALL_END_URL = ''
+CALL_RECEIVE_URL = 'https://1ql4qxft72.execute-api.us-east-2.amazonaws.com/test-2/answer-phone'
+CALL_END_URL = 'https://1ql4qxft72.execute-api.us-east-2.amazonaws.com/test-2/end-phone'
 
 
 class PhoneNumberService:
@@ -37,4 +37,4 @@ class PhoneNumberService:
     # TODO ASH Figure out what is returned when the number is not properly provisioned
     @trace_logging()
     def create_new_phone_number(self, phone_number: PhoneNumber):
-        self.client.incoming_phone_numbers.create(phone_number=phone_number.get_twilio_format(), voice_url=self.call_receive_url, status_callback=self.call_end_url)
+        return self.client.incoming_phone_numbers.create(phone_number=phone_number.get_twilio_format(), voice_url=self.call_receive_url, status_callback=self.call_end_url)

@@ -8,7 +8,7 @@ from shared_modules.logger import trace_logging
 @trace_logging()
 def lambda_handler(event, context):
     try:
-        if event['to'] is None:
+        if 'to' not in event:
             return json_to_xml("No 'to' parameter specified")
 
         resp = call_start_service(PhoneNumber(event['to']))

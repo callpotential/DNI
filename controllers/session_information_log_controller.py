@@ -4,6 +4,9 @@ from models.session_information_log import SessionInformationLog
 from shared_modules.logger import trace_logging
 import datetime
 
+from shared_modules.proxy_date_time import ProxyDateTime
+
+
 @trace_logging()
 def get_session_item_with_click_id(clickid: str):
     """DB Interface
@@ -53,6 +56,18 @@ def create_new_session_item(session_object_dict):
     session_item.sessionid = DatabaseInterface().insert(sql)
 
     return session_item
+
+
+@trace_logging()
+def update_call_start(pool_number: PhoneNumber, time: datetime = ProxyDateTime.now()):
+    sql = ("UPDATE sessioninformationlog SET callstart = '" + str(ProxyDateTime.date_time_to_sql(time)) + "' WHERE poolphonenumber = '" + str(pool_number) + "'")
+    DatabaseInterface().update(sql)
+
+
+@trace_logging()
+def update_call_end(pool_number: PhoneNumber, time: datetime = ProxyDateTime.now()):
+    sql = ("UPDATE sessioninformationlog SET callend = '" + str(ProxyDateTime.date_time_to_sql(time)) + "' WHERE poolphonenumber = '" + str(pool_number) + "'")
+    DatabaseInterface().update(sql)
 
 
 @trace_logging()

@@ -39,7 +39,7 @@ def update_assignment_pool_item(item: AssignmentPool):
            str(item.assignedroutingnumber) + "' WHERE poolphonenumber = '" +
            str(item.poolphonenumber) + "'")
 
-    my_result = DatabaseInterface().update(sql)
+    DatabaseInterface().update(sql)
 
 
 @trace_logging()
@@ -95,9 +95,9 @@ def set_ttl_expiry(pool_phone: PhoneNumber, duration_minutes: int = 10):
 
 
 @trace_logging()
-def register_assignment_pool_number(pool_phone_number: PhoneNumber, routing_number: PhoneNumber, business_id: int):
-    ttl = ProxyDateTime.date_time_now_to_sql()
+def register_assignment_pool_number(poolid: int, pool_phone_number: PhoneNumber, routing_number: PhoneNumber, business_id: int):
+    ttl = ProxyDateTime.date_time_to_sql(ProxyDateTime.now())
     sql = "INSERT INTO assignmentpool ( poolid, businessid, poolphonenumber, ttl, assignedroutingnumber, sessionid ) " \
-          "VALUES ( 'NULL', '" + str(business_id) + "', '" + str(pool_phone_number) + "', '" + str(ttl) + "', '" + str(routing_number) + "', 'NULL' );"
+          "VALUES ( " + str(poolid) + ", " + str(business_id) + ", '" + str(pool_phone_number) + "', '" + str(ttl) + "', '" + str(routing_number) + "', NULL );"
 
     return DatabaseInterface().insert(sql)
