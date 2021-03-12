@@ -39,7 +39,7 @@ def get_routing_number_from_pool_number(pool_number: PhoneNumber):
     if session_item is None:
         return None
     else:
-        return session_item.routingnumber.get_with_dashes()
+        return session_item.routingnumber
 
 
 @trace_logging()

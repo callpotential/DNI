@@ -6,12 +6,12 @@ from shared_modules.logger import trace_logging
 
 @trace_logging()
 def call_start_service(called_number: PhoneNumber):
+    update_call_start(called_number)
+
     routing_phone = get_routing_number_from_pool_number(called_number)
     if routing_phone is None:
         return None
 
-    update_call_start(routing_phone)
-
     resp = VoiceResponse()
-    resp.dial(routing_phone)
+    resp.dial(str(routing_phone))
     return str(resp)

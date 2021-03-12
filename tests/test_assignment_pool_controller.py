@@ -139,11 +139,11 @@ class AssignmentPoolControllerTest(unittest.TestCase):
         dbi_select.assert_called_with("SELECT * FROM assignment_pool WHERE poolphonenumber = '1231231235'")
         self.assertFalse(result)
 
-    @patch('shared_modules.proxy_date_time.ProxyDateTime.date_time_now_to_sql')
+    @patch('shared_modules.proxy_date_time.ProxyDateTime.now')
     @patch('shared_modules.database_interface.DatabaseInterface.insert')
     def test_register_assignment_pool_number(self, dbi_insert, date_time):
         dbi_insert.return_value = 12345
-        date_time.return_value = '2020-01-03 09:00:00'
+        date_time.return_value = datetime.strptime('2020-01-03 09:00:00', '%Y-%m-%d %H:%M:%S')
 
         result = pool.register_assignment_pool_number(PhoneNumber('111-111-1114'), PhoneNumber('111-111-1115'), 50)
 

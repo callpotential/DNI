@@ -34,3 +34,13 @@ def json_to_xml(response: str):
     return {
         "body": response
     }
+
+
+def form_urlencoded_to_json(params: str):
+    parameter_array = params.split('&')
+    response = dict()
+    for key_value_pair in parameter_array:
+        key_value_split = key_value_pair.split('=')
+        if len(key_value_split) > 1:
+            response[key_value_split[0]] = key_value_split[1]
+    return response
