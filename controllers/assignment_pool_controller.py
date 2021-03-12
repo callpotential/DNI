@@ -83,15 +83,23 @@ def reserve_number_from_pool(session_id: int, routingnumber: PhoneNumber, poolid
 
 
 @trace_logging()
-def set_ttl_expiry(pool_phone: PhoneNumber, duration_minutes: int = 10):
+def get_session_id_from_pool_number(pool_phone: PhoneNumber):
     sql = "SELECT * FROM assignmentpool WHERE poolphonenumber = '" + str(pool_phone) + "'"
     my_result = DatabaseInterface().select(sql)
 
     if len(my_result) > 0:
-        session_id = AssignmentPool(my_result[0]).sessionid
-        return refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes)
+        return AssignmentPool(my_result[0]).sessionid
     else:
         return None
+
+
+@trace_logging()
+def set_ttl_expiry(pool_phone: PhoneNumber, duration_minutes: int = 10):
+    session_id = get_session_id_from_pool_number(pool_phone)
+    if session_id is None:
+        return None
+    else:
+        return refresh_ttl_for_pool_number_with_session_id(session_id, duration_minutes)
 
 
 @trace_logging()
@@ -101,3 +109,4 @@ def register_assignment_pool_number(poolid: int, pool_phone_number: PhoneNumber,
           "VALUES ( " + str(poolid) + ", " + str(business_id) + ", '" + str(pool_phone_number) + "', '" + str(ttl) + "', '" + str(routing_number) + "', NULL );"
 
     return DatabaseInterface().insert(sql)
+

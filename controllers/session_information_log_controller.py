@@ -59,14 +59,14 @@ def create_new_session_item(session_object_dict):
 
 
 @trace_logging()
-def update_call_start(pool_number: PhoneNumber, time: datetime = ProxyDateTime.now()):
-    sql = ("UPDATE sessioninformationlog SET callstart = '" + str(ProxyDateTime.date_time_to_sql(time)) + "' WHERE poolphonenumber = '" + str(pool_number) + "'")
+def update_call_start(session_id: int, time: datetime = ProxyDateTime.now()):
+    sql = ("UPDATE sessioninformationlog SET callstart = '" + str(ProxyDateTime.date_time_to_sql(time)) + "' WHERE sessionid = '" + str(session_id) + "'")
     DatabaseInterface().update(sql)
 
 
 @trace_logging()
-def update_call_end(pool_number: PhoneNumber, time: datetime = ProxyDateTime.now()):
-    sql = ("UPDATE sessioninformationlog SET callend = '" + str(ProxyDateTime.date_time_to_sql(time)) + "' WHERE poolphonenumber = '" + str(pool_number) + "'")
+def update_call_end(session_id: int, time: datetime = ProxyDateTime.now()):
+    sql = ("UPDATE sessioninformationlog SET callend = '" + str(ProxyDateTime.date_time_to_sql(time)) + "' WHERE sessionid = '" + str(session_id) + "'")
     DatabaseInterface().update(sql)
 
 
