@@ -1,17 +1,8 @@
-from shared_modules.logger import get_logger
+from shared_modules.logger import trace_logging
 from shared_modules.twilio_functions import PhoneNumberService
 
 
-def handler(event, context):
-    get_logger().log_handler_enter(event, context)
-
-    pool_size: int = event['pool_size']
-    area_code: str = event['area_code']
-    locality: str = event['locality']
-
+@trace_logging()
+def request_pool_number(pool_size: int, area_code: str, locality: str):
     service = PhoneNumberService()
-    avail_phone_nums = service.list_available_phone_numbers(pool_size, area_code, locality)
-
-    resp = avail_phone_nums
-    get_logger().log_handler_exit(resp)
-    return resp
+    return service.list_available_phone_numbers(pool_size, area_code, locality)

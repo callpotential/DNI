@@ -5,8 +5,8 @@ from shared_modules.logger import trace_logging
 
 
 @trace_logging()
-def call_start_service(to: str):
-    routing_phone = get_routing_number_from_pool_number(PhoneNumber(to))
+def call_start_service(called_number: PhoneNumber):
+    routing_phone = get_routing_number_from_pool_number(called_number)
     if routing_phone is None:
         return None
 

@@ -3,7 +3,7 @@ import controllers.assignment_pool_controller as pool
 import controllers.replacement_number_map_controller as map
 import shared_modules.parsed_url as url_parser
 from models.phone_number import PhoneNumber
-from shared_modules.logger import trace_logging, get_logger
+from shared_modules.logger import trace_logging
 from shared_modules.proxy_date_time import ProxyDateTime
 
 
@@ -83,8 +83,3 @@ def create_session_and_reserve_number(number_to_replace: PhoneNumber, parsed_url
     session_item = session.create_new_session_item(session_object_dict)
     session_id = session_item.sessionid
     return pool.reserve_number_from_pool(session_id, map_item.routingnumber, pool_item.poolid)
-
-
-@trace_logging()
-def number_assignment_get_number(number_to_replace: str, url: str):
-    return get_assignment_pool_number(url, PhoneNumber(number_to_replace))

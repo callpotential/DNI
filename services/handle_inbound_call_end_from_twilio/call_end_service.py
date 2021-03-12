@@ -4,16 +4,13 @@ from models.phone_number import PhoneNumber
 from shared_modules.logger import trace_logging
 
 
+@trace_logging()
 def transmit_to_cp_call_log():
     pass
 
 
 @trace_logging()
-def call_end_service(to: str):
-
-    # Convert from str to PhoneNumber object
-    called_number: PhoneNumber = PhoneNumber(to)
-
+def call_end_service(called_number: PhoneNumber):
     set_ttl_expiry(called_number)
     session_item = get_session_item_with_pool_number(called_number)
     if session_item.clickid:
