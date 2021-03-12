@@ -7,12 +7,7 @@ def lambda_handler(event, context):
         if event['pool_size'] is None:
             return rest_response(400, "No 'pool_size' parameter specified")
 
-        if event['area_code'] is None:
-            return rest_response(400, "No 'area_code' parameter specified")
-
-        if event['locality'] is None:
-            return rest_response(400, "No 'locality' parameter specified")
-
+        # If the area code or locality are none we just ignore them
         avail_phone_nums = request_pool_number(int(event['pool_size']), event['area_code'], event['locality'])
 
         return rest_success_response(avail_phone_nums)
