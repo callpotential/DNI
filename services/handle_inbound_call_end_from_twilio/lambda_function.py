@@ -7,10 +7,10 @@ from shared_modules.logger import trace_logging
 @trace_logging()
 def lambda_handler(event, context):
     try:
-        if 'to' not in event:
-            return rest_response(400, "No 'to' parameter specified")
+        if 'To' not in event:
+            return rest_response(400, "No 'To' parameter specified")
 
-        call_end_service(PhoneNumber(event['to']))
+        call_end_service(PhoneNumber(event['To']))
 
         return rest_success_response()
     except Exception as e:

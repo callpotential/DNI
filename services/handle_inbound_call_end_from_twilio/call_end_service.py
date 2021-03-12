@@ -14,5 +14,5 @@ def call_end_service(called_number: PhoneNumber):
     update_call_end(called_number)
     set_ttl_expiry(called_number)
     session_item = get_session_item_with_pool_number(called_number)
-    if session_item.clickid:
+    if session_item is not None and session_item.clickid:
         transmit_to_cp_call_log()
