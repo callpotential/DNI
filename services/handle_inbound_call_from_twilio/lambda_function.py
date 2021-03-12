@@ -8,10 +8,10 @@ from shared_modules.logger import trace_logging
 @trace_logging()
 def lambda_handler(event, context):
     try:
-        if 'To' not in event:
-            return json_to_xml("No 'To' parameter specified")
+        if 'Called' not in event:
+            return json_to_xml("No 'Called' parameter specified")
 
-        resp = call_start_service(PhoneNumber(event['To']))
+        resp = call_start_service(PhoneNumber(event['Called']))
         return json_to_xml(str(resp))
     except Exception as e:
         return json_to_xml(str(e))
