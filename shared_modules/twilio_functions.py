@@ -38,3 +38,12 @@ class PhoneNumberService:
     @trace_logging()
     def create_new_phone_number(self, phone_number: PhoneNumber):
         return self.client.incoming_phone_numbers.create(phone_number=phone_number.get_twilio_format(), voice_url=self.call_receive_url, status_callback=self.call_end_url)
+
+    @trace_logging()
+    def delete_phone_number(self, phone_number: PhoneNumber):
+        twilio_phone_number = self.client.incoming_phone_numbers.list(phone_number=phone_number.get_twilio_format())
+        if len(twilio_phone_number) < 1:
+            return None
+
+        # We only expect one so we only delete the first element
+        return self.client.incoming_phone_numbers(twilio_phone_number[0].sid).delete()
