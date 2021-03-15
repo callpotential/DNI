@@ -9,14 +9,6 @@ class ProxyDateTime(datetime):
     def __new__(cls, *args, **kwargs):
         return datetime.__new__(datetime, *args, **kwargs)
 
-    @trace_logging()
-    def date_time_min_to_sql(self) -> str:
-        return ProxyDateTime.date_time_to_sql(self.min)
-
-    @trace_logging()
-    def date_time_now_to_sql(self) -> str:
-        return ProxyDateTime.date_time_to_sql(self.now())
-
     @staticmethod
     @trace_logging()
     def date_time_to_sql(date: datetime) -> str:
